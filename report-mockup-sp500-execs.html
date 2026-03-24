@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visualping Report — S&P 500 Executive Changes Tracker</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #F2F4F8;
+    color: #3A3A3A;
+    font-size: 13px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Top Nav ── */
+  .nav {
+    background: #fff;
+    border-bottom: 1px solid #E5E9F1;
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #3A3A3A;
+    text-decoration: none;
+  }
+  .nav-sep { width: 1px; height: 24px; background: #E5E9F1; }
+  .nav-workspace {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .nav-workspace select {
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    background: none;
+    color: #3A3A3A;
+    cursor: pointer;
+  }
+  .nav-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+  .nav-date {
+    font-size: 12px;
+    color: #787878;
+    background: #F7F8FB;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #E5E9F1;
+  }
+  .btn-dashboard {
+    background: #1882FF;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* ── Filters ── */
+  .filters {
+    background: #fff;
+    border-bottom: 1px solid #E5E9F1;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 12px;
+  }
+  .filter-icons { display: flex; gap: 8px; }
+  .filter-icon {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    border: 1px solid #E5E9F1;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: #787878; font-size: 14px;
+  }
+  .checkbox-group { display: flex; align-items: center; gap: 16px; }
+  .checkbox-group label {
+    display: flex; align-items: center; gap: 5px;
+    cursor: pointer; font-size: 12px; color: #3A3A3A;
+  }
+  .checkbox-group input[type="checkbox"] { width: 16px; height: 16px; accent-color: #1882FF; }
+
+  /* ── Report body ── */
+  .report-body {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #E5E9F1;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+  }
+  .card h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #3A3A3A;
+    margin-bottom: 12px;
+  }
+
+  /* ── AI badge ── */
+  .ai-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #0086C9;
+    background: #F0F9FF;
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin-left: 8px;
+  }
+  .ai-badge svg { width: 12px; height: 12px; }
+
+  /* ── Stat row ── */
+  .stat-row { display: flex; gap: 16px; margin-bottom: 20px; }
+  .stat-card {
+    flex: 1;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #E5E9F1;
+    padding: 16px 20px;
+    text-align: center;
+  }
+  .stat-number {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0B51AE;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.2;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: #787878;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-top: 4px;
+  }
+  .stat-number.red { color: #C62828; }
+  .stat-number.green { color: #2E7D32; }
+  .stat-number.amber { color: #E65100; }
+  .stat-number.purple { color: #6A1B9A; }
+
+  /* ── Summary ── */
+  .summary-text {
+    font-size: 13px;
+    color: #3A3A3A;
+    line-height: 1.7;
+  }
+
+  /* ── Key Changes ── */
+  .change-item {
+    padding: 16px 0;
+    border-bottom: 1px solid #F2F4F8;
+  }
+  .change-item:last-child { border-bottom: none; }
+  .change-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .change-source {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1882FF;
+    cursor: pointer;
+  }
+  .date-pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    color: #1882FF;
+    background: #F0F7FF;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .item-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .badge-ceo       { background: #FFEBEE; color: #C62828; }
+  .badge-cfo       { background: #FFF3E0; color: #E65100; }
+  .badge-board     { background: #F3E5F5; color: #6A1B9A; }
+  .badge-cto       { background: #E3F2FD; color: #1565C0; }
+  .badge-coo       { background: #E8F5E9; color: #2E7D32; }
+  .badge-gc        { background: #FFF8E1; color: #F57F17; }
+  .badge-ciso      { background: #FCE4EC; color: #AD1457; }
+  .badge-chro      { background: #E0F2F1; color: #00695C; }
+  .change-desc {
+    font-size: 12.5px;
+    color: #3A3A3A;
+    line-height: 1.6;
+    margin-bottom: 6px;
+  }
+  .change-significance {
+    font-size: 12px;
+    color: #787878;
+    line-height: 1.5;
+  }
+  .change-significance strong { color: #3A3A3A; font-weight: 600; }
+
+  /* ── Executive Table ── */
+  .table-subtitle {
+    font-size: 12px;
+    color: #787878;
+    margin-bottom: 16px;
+  }
+  table.exec-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  table.exec-table thead th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+    color: #787878;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 10px 8px;
+    border-bottom: 2px solid #E5E9F1;
+    background: #FAFBFD;
+    white-space: nowrap;
+  }
+  table.exec-table tbody td {
+    padding: 11px 8px;
+    border-bottom: 1px solid #F2F4F8;
+    color: #3A3A3A;
+    vertical-align: middle;
+  }
+  table.exec-table tbody tr:hover { background: #F7F8FB; }
+  .company-name { font-weight: 600; }
+  .ticker { font-size: 11px; color: #787878; font-weight: 400; }
+  .exec-name { font-weight: 600; }
+  .exec-prior { font-size: 11.5px; color: #787878; }
+
+  /* Role badges */
+  .role-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .role-ceo  { background: #FFEBEE; color: #C62828; }
+  .role-cfo  { background: #FFF3E0; color: #E65100; }
+  .role-cto  { background: #E3F2FD; color: #1565C0; }
+  .role-coo  { background: #E8F5E9; color: #2E7D32; }
+  .role-gc   { background: #FFF8E1; color: #F57F17; }
+  .role-board { background: #F3E5F5; color: #6A1B9A; }
+  .role-ciso { background: #FCE4EC; color: #AD1457; }
+  .role-chro { background: #E0F2F1; color: #00695C; }
+  .role-other { background: #F2F4F8; color: #787878; }
+
+  /* Action type */
+  .action-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .action-appointed  { background: #E8F5E9; color: #2E7D32; }
+  .action-departed   { background: #FFEBEE; color: #C62828; }
+  .action-interim     { background: #FFF8E1; color: #F57F17; }
+  .action-promoted   { background: #E3F2FD; color: #1565C0; }
+  .action-elected    { background: #F3E5F5; color: #6A1B9A; }
+
+  /* Source tag */
+  .source-tag {
+    font-size: 10px;
+    font-weight: 500;
+    color: #787878;
+    background: #F2F4F8;
+    padding: 1px 6px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  /* ── Other Changes ── */
+  .other-changes ul { list-style: disc; padding-left: 20px; }
+  .other-changes li {
+    font-size: 12.5px;
+    color: #3A3A3A;
+    line-height: 1.6;
+    margin-bottom: 6px;
+  }
+  .other-changes li a { color: #1882FF; text-decoration: none; }
+
+  @media (max-width: 860px) {
+    .report-body { padding: 16px 12px; }
+    .card { padding: 20px 16px; }
+    table.exec-table { font-size: 11px; }
+    table.exec-table thead th, table.exec-table tbody td { padding: 8px 4px; }
+    .stat-row { flex-wrap: wrap; }
+    .stat-card { min-width: 45%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════ TOP NAV ═══════ -->
+<div class="nav">
+  <a class="nav-logo" href="#">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <circle cx="14" cy="14" r="14" fill="#1882FF"/>
+      <path d="M7 14 L10.5 14 L12 10 L14 18 L16 12 L17.5 14 L21 14" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    visualping
+  </a>
+  <div class="nav-sep"></div>
+  <div class="nav-workspace">
+    Workspace:
+    <select>
+      <option>S&P 500 Leadership Pages</option>
+    </select>
+  </div>
+  <div class="nav-right">
+    <span class="nav-date">Between: Sep 2, 2024 – Sep 27, 2024 (America/New_York)</span>
+    <button class="btn-dashboard">Dashboard</button>
+  </div>
+</div>
+
+<!-- ═══════ FILTERS ═══════ -->
+<div class="filters">
+  <div class="filter-icons">
+    <div class="filter-icon">&#9776;</div>
+    <div class="filter-icon">&#8645;</div>
+  </div>
+  <div class="checkbox-group">
+    <label><input type="checkbox" checked> Current</label>
+    <label><input type="checkbox" checked> Previous</label>
+    <label><input type="checkbox" checked> Markup</label>
+  </div>
+</div>
+
+<!-- ═══════ REPORT BODY ═══════ -->
+<div class="report-body">
+
+  <!-- Stat cards -->
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-number">16</div>
+      <div class="stat-label">Executive Changes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">13</div>
+      <div class="stat-label">Companies</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number red">4</div>
+      <div class="stat-label">CEO Changes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number amber">3</div>
+      <div class="stat-label">CFO Changes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number purple">5</div>
+      <div class="stat-label">Board Changes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number green">9</div>
+      <div class="stat-label">External Hires</div>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="card">
+    <h2>Summary <span class="ai-badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0V2a.5.5 0 0 1 .5-.5zm0 10a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2a.5.5 0 0 1 .5-.5zm7-3.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM4 8a.5.5 0 0 1-.5.5H1.5a.5.5 0 0 1 0-1h2A.5.5 0 0 1 4 8zm8.485-4.485a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0z"/></svg> AI-generated</span></h2>
+    <p class="summary-text">
+      Monitored leadership, about-us, and newsroom pages across 108 S&P 500 companies detected <strong>16 executive changes</strong> at 13 companies in September 2024. Four CEO transitions dominate this period: Intel's Pat Gelsinger departure (replaced by interim co-CEOs amid foundry losses), Nike's surprise CEO swap installing Elliott Hill over John Donahoe, Starbucks recruiting Chipotle's Brian Niccol in one of the most high-profile poaches of the year, and CVS Health replacing Karen Lynch with David Joyner amid activist pressure. The external hire rate of <strong>56%</strong> (9 of 16) is notably above the trailing 12-month average of 38%, suggesting boards are looking outside for fresh strategic direction. Technology and consumer sectors saw the most churn — consistent with the accelerating AI transformation mandate and weakening consumer discretionary spending.
+    </p>
+  </div>
+
+  <!-- Key Changes -->
+  <div class="card">
+    <h2>Key Changes</h2>
+
+    <!-- Intel -->
+    <div class="change-item">
+      <div class="change-header">
+        <span class="change-source">Intel Corp. | Leadership Page</span>
+        <span class="date-pill">Sep 16</span>
+        <span class="item-badge badge-ceo">CEO</span>
+      </div>
+      <p class="change-desc">
+        Leadership page updated: Pat Gelsinger removed as CEO. Interim co-CEO structure announced — David Zinsner (CFO) and Michelle Johnston Holthaus (GM, Intel Products) serving as co-CEOs during board-led search. Frank Yeary named interim Executive Chair. Gelsinger "retired" amid board pressure over IDM 2.0 execution and $7B+ quarterly foundry losses.
+      </p>
+      <p class="change-significance"><strong>Significance:</strong> marks the end of Intel's aggressive foundry pivot strategy. Stock rose 5% on departure — market interpreting as potential for strategic review including foundry spin-off or sale. Co-CEO structure historically unstable; permanent appointment expected within 90 days. Board evaluating whether to continue Intel Foundry Services or explore structural alternatives.</p>
+    </div>
+
+    <!-- Starbucks -->
+    <div class="change-item">
+      <div class="change-header">
+        <span class="change-source">Starbucks Corp. | About Us</span>
+        <span class="date-pill">Sep 9</span>
+        <span class="item-badge badge-ceo">CEO</span>
+      </div>
+      <p class="change-desc">
+        Leadership page overhauled: Brian Niccol added as Chairman and CEO, effective September 9. Replaces Laxman Narasimhan who served just 16 months. Niccol recruited from Chipotle where he led the chain's digital transformation and 800% stock appreciation over six years. Compensation package includes $113M in total first-year awards plus a commuting arrangement from Newport Beach to Seattle via private jet.
+      </p>
+      <p class="change-significance"><strong>Significance:</strong> Starbucks stock surged 24.5% on announcement day — largest single-day gain in company history and $21B in market cap creation. Niccol is expected to simplify the menu, reinvigorate in-store experience, and reset the China strategy. Chipotle stock dropped 7.5% the same day on his departure.</p>
+    </div>
+
+    <!-- Nike -->
+    <div class="change-item">
+      <div class="change-header">
+        <span class="change-source">Nike Inc. | Leadership Page</span>
+        <span class="date-pill">Sep 19</span>
+        <span class="item-badge badge-ceo">CEO</span>
+      </div>
+      <p class="change-desc">
+        Leadership page updated: Elliott Hill named President and CEO, effective October 14. Hill is a 32-year Nike veteran who retired in 2020 as President of Consumer & Marketplace. Replaces John Donahoe whose tenure saw Nike lose market share to On Running and Hoka while over-rotating to direct-to-consumer at the expense of wholesale partnerships.
+      </p>
+      <p class="change-significance"><strong>Significance:</strong> stock jumped 9.2% after-hours — market welcoming return of a "product person" after Donahoe's tech-executive approach. Hill's deep wholesale relationships expected to rebuild Foot Locker / Dick's partnerships. His first priority: restore innovation pipeline and reverse the "if you don't have Air Force 1s, you don't have Nike" criticism.</p>
+    </div>
+
+    <!-- CVS Health -->
+    <div class="change-item">
+      <div class="change-header">
+        <span class="change-source">CVS Health Corp. | Newsroom</span>
+        <span class="date-pill">Sep 22</span>
+        <span class="item-badge badge-ceo">CEO</span>
+      </div>
+      <p class="change-desc">
+        Press release: David Joyner appointed President and CEO, effective immediately. Karen Lynch departed after Glenview Capital (4.5% stake) pushed for leadership change amid three consecutive quarters of lowered guidance. Joyner was President of Aetna, CVS's health insurance unit. Roger Farah named independent Board Chair.
+      </p>
+      <p class="change-significance"><strong>Significance:</strong> activist-driven CEO change — Glenview had been pressuring for either a leadership change or breakup of the CVS-Aetna-Caremark conglomerate. Joyner's appointment from the insurance side suggests the board sees Aetna as the strategic priority over retail pharmacy. Watch for potential Caremark PBM spin-off evaluation.</p>
+    </div>
+  </div>
+
+  <!-- ═══════ EXECUTIVE CHANGES TABLE ═══════ -->
+  <div class="card">
+    <h2>Executive Changes Extracted from Monitored Pages <span class="ai-badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0V2a.5.5 0 0 1 .5-.5zm0 10a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2a.5.5 0 0 1 .5-.5zm7-3.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM4 8a.5.5 0 0 1-.5.5H1.5a.5.5 0 0 1 0-1h2A.5.5 0 0 1 4 8zm8.485-4.485a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0z"/></svg> AI-generated</span></h2>
+    <p class="table-subtitle">16 changes detected across 13 S&P 500 companies · September 2024 · 56% external hire rate</p>
+
+    <table class="exec-table">
+      <thead>
+        <tr>
+          <th>Company</th>
+          <th>Executive</th>
+          <th>Role</th>
+          <th>Action</th>
+          <th>Prior Role / Origin</th>
+          <th>Effective</th>
+          <th>Source</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="company-name">Starbucks</span> <span class="ticker">SBUX</span></td>
+          <td><span class="exec-name">Brian Niccol</span></td>
+          <td><span class="role-badge role-ceo">CEO</span></td>
+          <td><span class="action-badge action-appointed">Appointed</span></td>
+          <td><span class="exec-prior">CEO, Chipotle Mexican Grill</span></td>
+          <td>Sep 9</td>
+          <td><span class="source-tag">External</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Starbucks</span> <span class="ticker">SBUX</span></td>
+          <td><span class="exec-name">Laxman Narasimhan</span></td>
+          <td><span class="role-badge role-ceo">CEO</span></td>
+          <td><span class="action-badge action-departed">Departed</span></td>
+          <td><span class="exec-prior">Served 16 months as CEO</span></td>
+          <td>Sep 9</td>
+          <td><span class="source-tag">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Intel</span> <span class="ticker">INTC</span></td>
+          <td><span class="exec-name">Pat Gelsinger</span></td>
+          <td><span class="role-badge role-ceo">CEO</span></td>
+          <td><span class="action-badge action-departed">Departed</span></td>
+          <td><span class="exec-prior">CEO since Feb 2021; "retired"</span></td>
+          <td>Sep 16</td>
+          <td><span class="source-tag">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Intel</span> <span class="ticker">INTC</span></td>
+          <td><span class="exec-name">David Zinsner</span></td>
+          <td><span class="role-badge role-ceo">Co-CEO</span></td>
+          <td><span class="action-badge action-interim">Interim</span></td>
+          <td><span class="exec-prior">CFO, Intel (concurrent)</span></td>
+          <td>Sep 16</td>
+          <td><span class="source-tag">Internal</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Nike</span> <span class="ticker">NKE</span></td>
+          <td><span class="exec-name">Elliott Hill</span></td>
+          <td><span class="role-badge role-ceo">CEO</span></td>
+          <td><span class="action-badge action-appointed">Appointed</span></td>
+          <td><span class="exec-prior">Fmr. Pres. Consumer & Marketplace, Nike (ret. 2020)</span></td>
+          <td>Oct 14</td>
+          <td><span class="source-tag">Boomerang</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">CVS Health</span> <span class="ticker">CVS</span></td>
+          <td><span class="exec-name">David Joyner</span></td>
+          <td><span class="role-badge role-ceo">CEO</span></td>
+          <td><span class="action-badge action-appointed">Appointed</span></td>
+          <td><span class="exec-prior">President, Aetna (CVS subsidiary)</span></td>
+          <td>Sep 22</td>
+          <td><span class="source-tag">Internal</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">CVS Health</span> <span class="ticker">CVS</span></td>
+          <td><span class="exec-name">Karen Lynch</span></td>
+          <td><span class="role-badge role-ceo">CEO</span></td>
+          <td><span class="action-badge action-departed">Departed</span></td>
+          <td><span class="exec-prior">Activist pressure (Glenview Capital)</span></td>
+          <td>Sep 22</td>
+          <td><span class="source-tag">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Intel</span> <span class="ticker">INTC</span></td>
+          <td><span class="exec-name">Frank Yeary</span></td>
+          <td><span class="role-badge role-board">Chair</span></td>
+          <td><span class="action-badge action-interim">Interim</span></td>
+          <td><span class="exec-prior">Independent Director since 2020</span></td>
+          <td>Sep 16</td>
+          <td><span class="source-tag">Internal</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Salesforce</span> <span class="ticker">CRM</span></td>
+          <td><span class="exec-name">Robin Washington</span></td>
+          <td><span class="role-badge role-cfo">CFO</span></td>
+          <td><span class="action-badge action-appointed">Appointed</span></td>
+          <td><span class="exec-prior">Fmr. CFO, Gilead Sciences; Alphabet Board</span></td>
+          <td>Sep 2</td>
+          <td><span class="source-tag">External</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">PayPal</span> <span class="ticker">PYPL</span></td>
+          <td><span class="exec-name">Jamie Miller</span></td>
+          <td><span class="role-badge role-cfo">CFO</span></td>
+          <td><span class="action-badge action-appointed">Appointed</span></td>
+          <td><span class="exec-prior">Fmr. CFO, EY; SVP Finance, Cargill</span></td>
+          <td>Sep 10</td>
+          <td><span class="source-tag">External</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Humana</span> <span class="ticker">HUM</span></td>
+          <td><span class="exec-name">Jim Rechtin</span></td>
+          <td><span class="role-badge role-ceo">CEO</span></td>
+          <td><span class="action-badge action-promoted">Promoted</span></td>
+          <td><span class="exec-prior">President, Insurance segment</span></td>
+          <td>Sep 30</td>
+          <td><span class="source-tag">Internal</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Uber</span> <span class="ticker">UBER</span></td>
+          <td><span class="exec-name">Jill Hazelbaker</span></td>
+          <td><span class="role-badge role-other">SVP Policy</span></td>
+          <td><span class="action-badge action-departed">Departed</span></td>
+          <td><span class="exec-prior">10-year tenure; key government relations role</span></td>
+          <td>Sep 13</td>
+          <td><span class="source-tag">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Goldman Sachs</span> <span class="ticker">GS</span></td>
+          <td><span class="exec-name">Kathryn Koch</span></td>
+          <td><span class="role-badge role-other">CIO, AWM</span></td>
+          <td><span class="action-badge action-promoted">Promoted</span></td>
+          <td><span class="exec-prior">Co-head, Goldman Sachs Asset Management</span></td>
+          <td>Sep 5</td>
+          <td><span class="source-tag">Internal</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Target</span> <span class="ticker">TGT</span></td>
+          <td><span class="exec-name">Lisa Roath</span></td>
+          <td><span class="role-badge role-other">CMO</span></td>
+          <td><span class="action-badge action-appointed">Appointed</span></td>
+          <td><span class="exec-prior">EVP Food & Beverage, Target</span></td>
+          <td>Sep 3</td>
+          <td><span class="source-tag">Internal</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Disney</span> <span class="ticker">DIS</span></td>
+          <td><span class="exec-name">James Gorman</span></td>
+          <td><span class="role-badge role-board">Chair</span></td>
+          <td><span class="action-badge action-elected">Elected</span></td>
+          <td><span class="exec-prior">Fmr. CEO, Morgan Stanley</span></td>
+          <td>Sep 18</td>
+          <td><span class="source-tag">External</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">3M</span> <span class="ticker">MMM</span></td>
+          <td><span class="exec-name">Anurag Maheshwari</span></td>
+          <td><span class="role-badge role-cfo">CFO</span></td>
+          <td><span class="action-badge action-appointed">Appointed</span></td>
+          <td><span class="exec-prior">SVP Finance, Otis Worldwide</span></td>
+          <td>Sep 23</td>
+          <td><span class="source-tag">External</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Other Changes -->
+  <div class="card other-changes">
+    <h2>Other Changes</h2>
+    <ul>
+      <li>Beyond C-suite and board changes, <strong>11 additional changes</strong> were detected on monitored leadership and about-us pages: 6 updated executive headshot photos, 3 revised biography texts reflecting new committee assignments, and 2 changes to organizational structure charts.</li>
+      <li>Estimated review workload: <strong>high</strong> — prioritize Intel (<a href="#">intel.com/leadership</a>) for co-CEO structure implications and portfolio impact, Starbucks (<a href="#">starbucks.com/about</a>) for turnaround thesis under Niccol, and CVS Health (<a href="#">cvshealth.com/about</a>) for potential conglomerate restructuring signals. Nike's Elliott Hill appointment warrants tracking of wholesale partnership rebuilding timeline.</li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>

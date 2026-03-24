@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visualping Report — S&P 500 Regulatory Action Monitor</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #F2F4F8;
+    color: #3A3A3A;
+    font-size: 13px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Top Nav ── */
+  .nav {
+    background: #fff;
+    border-bottom: 1px solid #E5E9F1;
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #3A3A3A;
+    text-decoration: none;
+  }
+  .nav-sep { width: 1px; height: 24px; background: #E5E9F1; }
+  .nav-workspace {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .nav-workspace select {
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    background: none;
+    color: #3A3A3A;
+    cursor: pointer;
+  }
+  .nav-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+  .nav-date {
+    font-size: 12px;
+    color: #787878;
+    background: #F7F8FB;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #E5E9F1;
+  }
+  .btn-dashboard {
+    background: #1882FF;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* ── Filters ── */
+  .filters {
+    background: #fff;
+    border-bottom: 1px solid #E5E9F1;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 12px;
+  }
+  .filter-icons { display: flex; gap: 8px; }
+  .filter-icon {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    border: 1px solid #E5E9F1;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: #787878; font-size: 14px;
+  }
+  .checkbox-group { display: flex; align-items: center; gap: 16px; }
+  .checkbox-group label {
+    display: flex; align-items: center; gap: 5px;
+    cursor: pointer; font-size: 12px; color: #3A3A3A;
+  }
+  .checkbox-group input[type="checkbox"] { width: 16px; height: 16px; accent-color: #1882FF; }
+
+  /* ── Report body ── */
+  .report-body {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #E5E9F1;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+  }
+  .card h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #3A3A3A;
+    margin-bottom: 12px;
+  }
+
+  /* ── AI badge ── */
+  .ai-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #0086C9;
+    background: #F0F9FF;
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin-left: 8px;
+  }
+  .ai-badge svg { width: 12px; height: 12px; }
+
+  /* ── Stat row ── */
+  .stat-row { display: flex; gap: 16px; margin-bottom: 20px; }
+  .stat-card {
+    flex: 1;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #E5E9F1;
+    padding: 16px 20px;
+    text-align: center;
+  }
+  .stat-number {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0B51AE;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.2;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: #787878;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-top: 4px;
+  }
+  .stat-number.red { color: #C62828; }
+  .stat-number.green { color: #2E7D32; }
+  .stat-number.amber { color: #E65100; }
+
+  /* ── Summary ── */
+  .summary-text {
+    font-size: 13px;
+    color: #3A3A3A;
+    line-height: 1.7;
+  }
+
+  /* ── Key Changes ── */
+  .change-item {
+    padding: 16px 0;
+    border-bottom: 1px solid #F2F4F8;
+  }
+  .change-item:last-child { border-bottom: none; }
+  .change-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .change-source {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1882FF;
+    cursor: pointer;
+  }
+  .date-pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    color: #1882FF;
+    background: #F0F7FF;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .item-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .badge-antitrust  { background: #FFEBEE; color: #C62828; }
+  .badge-criminal   { background: #4A0000; color: #FFCDD2; }
+  .badge-consumer   { background: #FFF3E0; color: #E65100; }
+  .badge-securities { background: #E3F2FD; color: #1565C0; }
+  .badge-privacy    { background: #F3E5F5; color: #6A1B9A; }
+  .badge-safety     { background: #FFF8E1; color: #F57F17; }
+  .badge-environ    { background: #E8F5E9; color: #2E7D32; }
+  .badge-merger     { background: #FCE4EC; color: #AD1457; }
+  .change-desc {
+    font-size: 12.5px;
+    color: #3A3A3A;
+    line-height: 1.6;
+    margin-bottom: 6px;
+  }
+  .change-significance {
+    font-size: 12px;
+    color: #787878;
+    line-height: 1.5;
+  }
+  .change-significance strong { color: #3A3A3A; font-weight: 600; }
+
+  /* ── Table ── */
+  .table-subtitle {
+    font-size: 12px;
+    color: #787878;
+    margin-bottom: 16px;
+  }
+  table.reg-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  table.reg-table thead th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+    color: #787878;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 10px 8px;
+    border-bottom: 2px solid #E5E9F1;
+    background: #FAFBFD;
+    white-space: nowrap;
+  }
+  table.reg-table thead th.num { text-align: right; }
+  table.reg-table tbody td {
+    padding: 11px 8px;
+    border-bottom: 1px solid #F2F4F8;
+    color: #3A3A3A;
+    vertical-align: middle;
+  }
+  table.reg-table tbody td.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  table.reg-table tbody tr:hover { background: #F7F8FB; }
+  .company-name { font-weight: 600; }
+  .ticker { font-size: 11px; color: #787878; font-weight: 400; }
+
+  /* Agency badges */
+  .agency-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
+  .agency-doj  { background: #1A237E; color: #fff; }
+  .agency-ftc  { background: #B71C1C; color: #fff; }
+  .agency-sec  { background: #0D47A1; color: #fff; }
+  .agency-cfpb { background: #1B5E20; color: #fff; }
+  .agency-fda  { background: #E65100; color: #fff; }
+  .agency-epa  { background: #2E7D32; color: #fff; }
+  .agency-fcc  { background: #4A148C; color: #fff; }
+  .agency-occ  { background: #37474F; color: #fff; }
+
+  /* Action type */
+  .action-type {
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  /* Penalty */
+  .penalty {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: #C62828;
+  }
+  .penalty-tbd {
+    font-weight: 500;
+    color: #787878;
+    font-style: italic;
+  }
+
+  /* Status badges */
+  .status-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .status-ruling   { background: #FFEBEE; color: #C62828; }
+  .status-settled   { background: #FFF8E1; color: #F57F17; }
+  .status-filed     { background: #E3F2FD; color: #1565C0; }
+  .status-plea      { background: #F3E5F5; color: #6A1B9A; }
+  .status-order     { background: #FFF3E0; color: #E65100; }
+  .status-warning   { background: #FCE4EC; color: #AD1457; }
+  .status-ongoing   { background: #F2F4F8; color: #787878; }
+
+  /* ── Other Changes ── */
+  .other-changes ul { list-style: disc; padding-left: 20px; }
+  .other-changes li {
+    font-size: 12.5px;
+    color: #3A3A3A;
+    line-height: 1.6;
+    margin-bottom: 6px;
+  }
+  .other-changes li a { color: #1882FF; text-decoration: none; }
+
+  @media (max-width: 860px) {
+    .report-body { padding: 16px 12px; }
+    .card { padding: 20px 16px; }
+    table.reg-table { font-size: 11px; }
+    table.reg-table thead th, table.reg-table tbody td { padding: 8px 4px; }
+    .stat-row { flex-wrap: wrap; }
+    .stat-card { min-width: 45%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════ TOP NAV ═══════ -->
+<div class="nav">
+  <a class="nav-logo" href="#">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <circle cx="14" cy="14" r="14" fill="#1882FF"/>
+      <path d="M7 14 L10.5 14 L12 10 L14 18 L16 12 L17.5 14 L21 14" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    visualping
+  </a>
+  <div class="nav-sep"></div>
+  <div class="nav-workspace">
+    Workspace:
+    <select>
+      <option>Federal Regulatory Newsrooms</option>
+    </select>
+  </div>
+  <div class="nav-right">
+    <span class="nav-date">Between: Jul 1, 2024 – Aug 30, 2024 (America/New_York)</span>
+    <button class="btn-dashboard">Dashboard</button>
+  </div>
+</div>
+
+<!-- ═══════ FILTERS ═══════ -->
+<div class="filters">
+  <div class="filter-icons">
+    <div class="filter-icon">&#9776;</div>
+    <div class="filter-icon">&#8645;</div>
+  </div>
+  <div class="checkbox-group">
+    <label><input type="checkbox" checked> Current</label>
+    <label><input type="checkbox" checked> Previous</label>
+    <label><input type="checkbox" checked> Markup</label>
+  </div>
+</div>
+
+<!-- ═══════ REPORT BODY ═══════ -->
+<div class="report-body">
+
+  <!-- Stat cards -->
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-number">11</div>
+      <div class="stat-label">Actions Detected</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">9</div>
+      <div class="stat-label">S&P 500 Companies</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">5</div>
+      <div class="stat-label">Agencies</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number red">$546M</div>
+      <div class="stat-label">Total Penalties</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number amber">3</div>
+      <div class="stat-label">Landmark Rulings</div>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="card">
+    <h2>Summary <span class="ai-badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0V2a.5.5 0 0 1 .5-.5zm0 10a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2a.5.5 0 0 1 .5-.5zm7-3.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM4 8a.5.5 0 0 1-.5.5H1.5a.5.5 0 0 1 0-1h2A.5.5 0 0 1 4 8zm8.485-4.485a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0z"/></svg> AI-generated</span></h2>
+    <p class="summary-text">
+      Monitored newsroom and press release pages across DOJ, FTC, SEC, CFPB, and FDA detected <strong>11 regulatory actions</strong> naming 9 S&P 500 companies during July–August 2024. The period's defining event: <strong>Judge Amit Mehta ruled Google illegally monopolized the search market</strong> — the most significant antitrust verdict against a tech company since the 2001 Microsoft case. Boeing accepted a criminal fraud plea deal over 737 MAX crashes, avoiding trial but agreeing to $243.6M in penalties and an independent compliance monitor. CFPB ordered Bank of America to pay $250M for junk fees and fake accounts — the bureau's largest bank enforcement action of 2024. Total quantified penalties across all actions: <strong>$546M+</strong>, with Google's remedies still TBD (potentially structural). Antitrust enforcement dominated with 3 of the 5 highest-impact actions, consistent with the Biden administration's aggressive competition agenda.
+    </p>
+  </div>
+
+  <!-- Key Changes -->
+  <div class="card">
+    <h2>Key Changes</h2>
+
+    <!-- Google Antitrust -->
+    <div class="change-item">
+      <div class="change-header">
+        <span class="change-source">DOJ Antitrust Division | Newsroom</span>
+        <span class="date-pill">Aug 5</span>
+        <span class="item-badge badge-antitrust">Antitrust</span>
+      </div>
+      <p class="change-desc">
+        New press release: "Court Rules Google Illegally Maintained Monopoly in Search." Judge Amit Mehta of the D.C. District Court found that Google's $26.3B in annual payments to Apple, Samsung, and Mozilla for default search placement constituted illegal monopoly maintenance under Section 2 of the Sherman Act. Google holds 89.2% of the U.S. general search market and 94.9% on mobile.
+      </p>
+      <p class="change-significance"><strong>Significance:</strong> most important antitrust ruling in tech since U.S. v. Microsoft (2001). Remedies phase begins 2025 — DOJ is expected to seek structural remedies including potentially forcing Google to divest Chrome or Android, or banning exclusive default search agreements. Alphabet stock dropped 4.6% on the ruling. Apple's $20B+ annual Google TAC payment is at direct risk.</p>
+    </div>
+
+    <!-- Boeing Criminal -->
+    <div class="change-item">
+      <div class="change-header">
+        <span class="change-source">DOJ Criminal Division | Press Releases</span>
+        <span class="date-pill">Jul 7</span>
+        <span class="item-badge badge-criminal">Criminal</span>
+      </div>
+      <p class="change-desc">
+        New press release: "Boeing to Plead Guilty to Criminal Fraud Conspiracy Charge." Boeing agreed to plead guilty to conspiring to defraud the FAA during the 737 MAX certification process that led to two crashes killing 346 people (Lion Air 2018, Ethiopian Airlines 2019). Penalty: $243.6M fine (matching the 2021 DPA amount), an independent compliance monitor for 3 years, and $455M investment in compliance and safety programs.
+      </p>
+      <p class="change-significance"><strong>Significance:</strong> first criminal guilty plea by a major U.S. aerospace company. Families of crash victims opposed the deal as too lenient. Independent monitor will have sweeping access to Boeing's safety and engineering processes. A felony conviction could jeopardize Boeing's eligibility for certain government contracts — though DOJ carved out an exception. Credit rating agencies reviewing implications.</p>
+    </div>
+
+    <!-- Bank of America CFPB -->
+    <div class="change-item">
+      <div class="change-header">
+        <span class="change-source">CFPB | Newsroom</span>
+        <span class="date-pill">Jul 11</span>
+        <span class="item-badge badge-consumer">Consumer Protection</span>
+      </div>
+      <p class="change-desc">
+        New press release: "CFPB Orders Bank of America to Pay $250 Million for Systematic Junk Fees and Fake Accounts." CFPB found Bank of America (1) double-dipped on insufficient funds fees on the same transaction, (2) withheld promised credit card rewards from customers, and (3) opened accounts without customer authorization. Penalty: $150M to affected consumers + $90M CFPB penalty + $10M OCC penalty.
+      </p>
+      <p class="change-significance"><strong>Significance:</strong> largest CFPB bank enforcement action of 2024. The fake accounts finding draws direct comparisons to Wells Fargo's 2016 scandal. Bank of America neither admitted nor denied the findings. CFPB Director Chopra called it "one bank, three different schemes to cheat customers." Expect Congressional scrutiny at upcoming Senate Banking Committee hearings.</p>
+    </div>
+
+    <!-- DOJ RealPage -->
+    <div class="change-item">
+      <div class="change-header">
+        <span class="change-source">DOJ Antitrust Division | Press Releases</span>
+        <span class="date-pill">Aug 23</span>
+        <span class="item-badge badge-antitrust">Antitrust</span>
+      </div>
+      <p class="change-desc">
+        New press release: "Justice Department Sues RealPage for Algorithmic Pricing Scheme that Harms Renters." DOJ alleges RealPage's revenue management software enabled landlords to coordinate rent pricing using nonpublic competitor data — effectively an algorithmic price-fixing scheme. Named co-conspirators include several S&P 500 REITs: AvalonBay Communities, Equity Residential, and Camden Property Trust, collectively managing 500,000+ apartment units.
+      </p>
+      <p class="change-significance"><strong>Significance:</strong> first major federal challenge to algorithmic collusion — could reshape how AI pricing tools are used across industries. Named REITs face both DOJ liability and a parallel class action seeking treble damages. If successful, this theory of algorithmic coordination could extend to airline pricing, hotel revenue management, and beyond.</p>
+    </div>
+  </div>
+
+  <!-- ═══════ REGULATORY TABLE ═══════ -->
+  <div class="card">
+    <h2>Regulatory Actions Extracted from Monitored Pages <span class="ai-badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0V2a.5.5 0 0 1 .5-.5zm0 10a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2a.5.5 0 0 1 .5-.5zm7-3.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM4 8a.5.5 0 0 1-.5.5H1.5a.5.5 0 0 1 0-1h2A.5.5 0 0 1 4 8zm8.485-4.485a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0z"/></svg> AI-generated</span></h2>
+    <p class="table-subtitle">11 actions naming 9 S&P 500 companies · Jul 1 – Aug 30, 2024 · 5 federal agencies monitored</p>
+
+    <table class="reg-table">
+      <thead>
+        <tr>
+          <th>Company</th>
+          <th>Agency</th>
+          <th>Action Type</th>
+          <th>Description</th>
+          <th class="num">Penalty</th>
+          <th>Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="company-name">Alphabet</span> <span class="ticker">GOOGL</span></td>
+          <td><span class="agency-badge agency-doj">DOJ</span></td>
+          <td class="action-type">Antitrust — monopoly</td>
+          <td>Court ruled Google illegally monopolized search via $26.3B default agreements</td>
+          <td class="num"><span class="penalty-tbd">TBD (structural)</span></td>
+          <td>Aug 5</td>
+          <td><span class="status-badge status-ruling">Ruling</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Boeing</span> <span class="ticker">BA</span></td>
+          <td><span class="agency-badge agency-doj">DOJ</span></td>
+          <td class="action-type">Criminal fraud conspiracy</td>
+          <td>Guilty plea for defrauding FAA during 737 MAX certification; 346 deaths</td>
+          <td class="num"><span class="penalty">$243.6M</span></td>
+          <td>Jul 7</td>
+          <td><span class="status-badge status-plea">Plea Deal</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Bank of America</span> <span class="ticker">BAC</span></td>
+          <td><span class="agency-badge agency-cfpb">CFPB</span></td>
+          <td class="action-type">Consumer protection</td>
+          <td>Junk fees, withheld credit card rewards, unauthorized account openings</td>
+          <td class="num"><span class="penalty">$250.0M</span></td>
+          <td>Jul 11</td>
+          <td><span class="status-badge status-order">Order</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">AvalonBay</span> <span class="ticker">AVB</span></td>
+          <td><span class="agency-badge agency-doj">DOJ</span></td>
+          <td class="action-type">Antitrust — price-fixing</td>
+          <td>Named co-conspirator in RealPage algorithmic rent pricing scheme</td>
+          <td class="num"><span class="penalty-tbd">TBD</span></td>
+          <td>Aug 23</td>
+          <td><span class="status-badge status-filed">Filed</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Equity Residential</span> <span class="ticker">EQR</span></td>
+          <td><span class="agency-badge agency-doj">DOJ</span></td>
+          <td class="action-type">Antitrust — price-fixing</td>
+          <td>Named co-conspirator in RealPage algorithmic rent pricing scheme</td>
+          <td class="num"><span class="penalty-tbd">TBD</span></td>
+          <td>Aug 23</td>
+          <td><span class="status-badge status-filed">Filed</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Wells Fargo</span> <span class="ticker">WFC</span></td>
+          <td><span class="agency-badge agency-sec">SEC</span></td>
+          <td class="action-type">Securities — fee overcharges</td>
+          <td>Investment advisers overcharged clients through improper fee calculations</td>
+          <td class="num"><span class="penalty">$35.0M</span></td>
+          <td>Jul 18</td>
+          <td><span class="status-badge status-settled">Settled</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Morgan Stanley</span> <span class="ticker">MS</span></td>
+          <td><span class="agency-badge agency-sec">SEC</span></td>
+          <td class="action-type">Securities — data protection</td>
+          <td>Failed to protect ~15M customer records during IT asset decommissioning</td>
+          <td class="num"><span class="penalty">$6.5M</span></td>
+          <td>Aug 8</td>
+          <td><span class="status-badge status-settled">Settled</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Abbott Labs</span> <span class="ticker">ABT</span></td>
+          <td><span class="agency-badge agency-fda">FDA</span></td>
+          <td class="action-type">Safety — manufacturing</td>
+          <td>Warning letter for Sturgis infant formula plant; quality control deficiencies</td>
+          <td class="num"><span class="penalty-tbd">N/A</span></td>
+          <td>Jul 25</td>
+          <td><span class="status-badge status-warning">Warning</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Pfizer</span> <span class="ticker">PFE</span></td>
+          <td><span class="agency-badge agency-fda">FDA</span></td>
+          <td class="action-type">Safety — labeling</td>
+          <td>FDA required updated Paxlovid labeling for drug interaction warnings</td>
+          <td class="num"><span class="penalty-tbd">N/A</span></td>
+          <td>Aug 12</td>
+          <td><span class="status-badge status-order">Order</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Apple</span> <span class="ticker">AAPL</span></td>
+          <td><span class="agency-badge agency-doj">DOJ</span></td>
+          <td class="action-type">Antitrust — monopoly</td>
+          <td>DOJ antitrust suit (filed Mar '24) proceeding; discovery phase underway</td>
+          <td class="num"><span class="penalty-tbd">TBD</span></td>
+          <td>Aug 15</td>
+          <td><span class="status-badge status-ongoing">Ongoing</span></td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Amazon</span> <span class="ticker">AMZN</span></td>
+          <td><span class="agency-badge agency-ftc">FTC</span></td>
+          <td class="action-type">Antitrust — monopoly</td>
+          <td>FTC monopoly suit (filed Sep '23) proceeding; motion to dismiss denied Jul 2024</td>
+          <td class="num"><span class="penalty-tbd">TBD</span></td>
+          <td>Jul 10</td>
+          <td><span class="status-badge status-ongoing">Ongoing</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Other Changes -->
+  <div class="card other-changes">
+    <h2>Other Changes</h2>
+    <ul>
+      <li>Beyond named enforcement actions, <strong>8 additional changes</strong> were detected on monitored regulatory newsroom pages: 3 updated guidance documents (SEC cybersecurity disclosure rules, FTC AI enforcement policy, FDA laboratory testing framework), 3 agency leadership speeches mentioning S&P 500 companies by name, and 2 newly opened public comment periods relevant to financial services and technology sectors.</li>
+      <li>Estimated review workload: <strong>very high</strong> — prioritize the Google antitrust ruling (<a href="#">justice.gov/atr</a>) for portfolio-wide implications across ad-tech and mobile ecosystem holdings. Boeing's plea deal (<a href="#">justice.gov/criminal</a>) and Bank of America CFPB order (<a href="#">consumerfinance.gov/enforcement</a>) require immediate risk assessment. Track RealPage REIT exposure across real estate portfolio positions.</li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>

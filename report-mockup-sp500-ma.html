@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visualping Report — S&P 500 M&A Intelligence</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #F2F4F8;
+    color: #3A3A3A;
+    font-size: 13px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Top Nav ── */
+  .nav {
+    background: #fff;
+    border-bottom: 1px solid #E5E9F1;
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #3A3A3A;
+    text-decoration: none;
+  }
+  .nav-logo svg { flex-shrink: 0; }
+  .nav-sep {
+    width: 1px;
+    height: 24px;
+    background: #E5E9F1;
+  }
+  .nav-workspace {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #3A3A3A;
+  }
+  .nav-workspace select {
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    background: none;
+    color: #3A3A3A;
+    cursor: pointer;
+    padding: 4px 0;
+  }
+  .nav-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .nav-date {
+    font-size: 12px;
+    color: #787878;
+    background: #F7F8FB;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #E5E9F1;
+  }
+  .btn-dashboard {
+    background: #1882FF;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* ── Sub-header / filters ── */
+  .filters {
+    background: #fff;
+    border-bottom: 1px solid #E5E9F1;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 12px;
+    color: #787878;
+  }
+  .filters .filter-icons {
+    display: flex;
+    gap: 8px;
+  }
+  .filter-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid #E5E9F1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #787878;
+    font-size: 14px;
+  }
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #3A3A3A;
+  }
+  .checkbox-group input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #1882FF;
+  }
+
+  /* ── Report body ── */
+  .report-body {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  /* ── Summary Section ── */
+  .summary-section {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #E5E9F1;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+  }
+  .summary-section h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #3A3A3A;
+    margin-bottom: 12px;
+  }
+  .summary-text {
+    font-size: 13px;
+    color: #3A3A3A;
+    line-height: 1.7;
+  }
+
+  /* ── Key Changes ── */
+  .key-changes {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #E5E9F1;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+  }
+  .key-changes h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #3A3A3A;
+    margin-bottom: 16px;
+  }
+  .change-item {
+    padding: 16px 0;
+    border-bottom: 1px solid #F2F4F8;
+  }
+  .change-item:last-child { border-bottom: none; }
+  .change-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .change-source {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1882FF;
+    cursor: pointer;
+  }
+  .change-source:hover { text-decoration: underline; }
+  .date-pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    color: #1882FF;
+    background: #F0F7FF;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .change-type-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .badge-ma {
+    background: #FFF3E0;
+    color: #E65100;
+  }
+  .change-desc {
+    font-size: 12.5px;
+    color: #3A3A3A;
+    line-height: 1.6;
+    margin-bottom: 6px;
+  }
+  .change-significance {
+    font-size: 12px;
+    color: #787878;
+    line-height: 1.5;
+  }
+  .change-significance strong {
+    color: #3A3A3A;
+    font-weight: 600;
+  }
+
+  /* ── M&A Table ── */
+  .ma-table-section {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #E5E9F1;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+  }
+  .ma-table-section h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #3A3A3A;
+    margin-bottom: 6px;
+  }
+  .table-subtitle {
+    font-size: 12px;
+    color: #787878;
+    margin-bottom: 16px;
+  }
+  table.ma-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  table.ma-table thead th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+    color: #787878;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 10px 12px;
+    border-bottom: 2px solid #E5E9F1;
+    background: #FAFBFD;
+  }
+  table.ma-table tbody td {
+    padding: 12px 12px;
+    border-bottom: 1px solid #F2F4F8;
+    color: #3A3A3A;
+    vertical-align: top;
+  }
+  table.ma-table tbody tr:hover {
+    background: #F7F8FB;
+  }
+  .company-name {
+    font-weight: 600;
+    color: #3A3A3A;
+  }
+  .ticker {
+    font-size: 11px;
+    color: #787878;
+    font-weight: 400;
+  }
+  .amount {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .payment-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .payment-stock {
+    background: #E8F5E9;
+    color: #2E7D32;
+  }
+  .payment-cash {
+    background: #E3F2FD;
+    color: #1565C0;
+  }
+  .payment-both {
+    background: #F3E5F5;
+    color: #6A1B9A;
+  }
+  .reg-yes {
+    color: #E65100;
+    font-weight: 500;
+  }
+  .reg-no {
+    color: #2E7D32;
+    font-weight: 500;
+  }
+
+  /* ── Other Changes ── */
+  .other-changes {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #E5E9F1;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+  }
+  .other-changes h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #3A3A3A;
+    margin-bottom: 12px;
+  }
+  .other-changes ul {
+    list-style: disc;
+    padding-left: 20px;
+  }
+  .other-changes li {
+    font-size: 12.5px;
+    color: #3A3A3A;
+    line-height: 1.6;
+    margin-bottom: 6px;
+  }
+  .other-changes li a {
+    color: #1882FF;
+    text-decoration: none;
+  }
+
+  /* ── Workload estimate ── */
+  .workload {
+    font-size: 12px;
+    color: #787878;
+    line-height: 1.6;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #F2F4F8;
+  }
+
+  /* ── AI badge ── */
+  .ai-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #0086C9;
+    background: #F0F9FF;
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin-left: 8px;
+  }
+  .ai-badge svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .report-body { padding: 16px 12px; }
+    .summary-section, .key-changes, .ma-table-section, .other-changes { padding: 20px 16px; }
+    table.ma-table { font-size: 11px; }
+    table.ma-table thead th, table.ma-table tbody td { padding: 8px 6px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════ TOP NAV ═══════ -->
+<div class="nav">
+  <a class="nav-logo" href="#">
+    <!-- VP Icon -->
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <circle cx="14" cy="14" r="14" fill="#1882FF"/>
+      <path d="M7 14 L10.5 14 L12 10 L14 18 L16 12 L17.5 14 L21 14" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    visualping
+  </a>
+  <div class="nav-sep"></div>
+  <div class="nav-workspace">
+    Workspace:
+    <select>
+      <option>S&P 500 Investor Relations</option>
+    </select>
+  </div>
+  <div class="nav-right">
+    <span class="nav-date">Between: Jan 8, 2024 – Apr 8, 2024 (America/New_York)</span>
+    <button class="btn-dashboard">Dashboard</button>
+  </div>
+</div>
+
+<!-- ═══════ FILTERS ═══════ -->
+<div class="filters">
+  <div class="filter-icons">
+    <div class="filter-icon">&#9776;</div>
+    <div class="filter-icon">&#8645;</div>
+  </div>
+  <div class="checkbox-group">
+    <label><input type="checkbox" checked> Current</label>
+    <label><input type="checkbox" checked> Previous</label>
+    <label><input type="checkbox" checked> Markup</label>
+  </div>
+</div>
+
+<!-- ═══════ REPORT BODY ═══════ -->
+<div class="report-body">
+
+  <!-- Summary -->
+  <div class="summary-section">
+    <h2>Summary <span class="ai-badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0V2a.5.5 0 0 1 .5-.5zm0 10a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2a.5.5 0 0 1 .5-.5zm7-3.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM4 8a.5.5 0 0 1-.5.5H1.5a.5.5 0 0 1 0-1h2A.5.5 0 0 1 4 8zm8.485-4.485a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0z"/></svg> AI-generated</span></h2>
+    <p class="summary-text">
+      Monitored investor relations and newsroom pages across 127 S&P 500 companies detected <strong>6 M&A announcements</strong> totaling <strong>$139.9 billion</strong> in deal value during this period. The largest transaction was ExxonMobil's $59.5B all-stock acquisition of Pioneer Natural Resources, consolidating Permian Basin assets. Capital One's $35.3B Discover acquisition (Serge's reference) would create the largest U.S. credit card issuer by loan balance. Healthcare saw two major deals: J&J's $13.1B cash acquisition of Shockwave Medical (intravascular lithotripsy) and Novo Holdings' $16.5B Catalent buyout. Technology M&A also active with HPE's $14.0B Juniper Networks bid. All six deals require regulatory approval; three are all-stock, signaling acquirer confidence in share valuations.
+    </p>
+  </div>
+
+  <!-- Key Changes -->
+  <div class="key-changes">
+    <h2>Key Changes</h2>
+
+    <!-- Deal 1: Capital One / Discover -->
+    <div class="change-item">
+      <div class="change-header">
+        <span class="change-source">Capital One Financial | Investor Relations</span>
+        <span class="date-pill">Feb 19</span>
+        <span class="change-type-badge badge-ma">M&A</span>
+      </div>
+      <p class="change-desc">
+        New press release: "Capital One to Acquire Discover." Definitive agreement for all-stock transaction valued at $35.3 billion. Discover shareholders receive 1.0192 Capital One shares per Discover share — 26.6% premium to $110.49 closing price (Feb 16). Combined entity creates a global payments network with 70M+ merchant acceptance points across 200+ countries.
+      </p>
+      <p class="change-significance"><strong>Significance:</strong> largest U.S. bank M&A since 2019 — reshapes the credit card and payments landscape. Expected $2.7B in pre-tax synergies. Transaction subject to Fed and OCC regulatory approval.</p>
+    </div>
+
+    <!-- Deal 2: J&J / Shockwave -->
+    <div class="change-item">
+      <div class="change-header">
+        <span class="change-source">Johnson & Johnson | Newsroom</span>
+        <span class="date-pill">Apr 5</span>
+        <span class="change-type-badge badge-ma">M&A</span>
+      </div>
+      <p class="change-desc">
+        New press release via BusinessWire: "Johnson & Johnson to Acquire Shockwave Medical." Definitive agreement for all-cash tender offer at $335.00 per share, total enterprise value approximately $13.1 billion. Shockwave's intravascular lithotripsy (IVL) platform treats calcified cardiovascular disease — complements J&J's MedTech cardiovascular portfolio.
+      </p>
+      <p class="change-significance"><strong>Significance:</strong> J&J's largest MedTech acquisition in years — adds high-growth IVL technology with $730M+ in 2023 revenue. Subject to HSR antitrust clearance and international regulatory approvals.</p>
+    </div>
+
+    <!-- Deal 3: ExxonMobil / Pioneer -->
+    <div class="change-item">
+      <div class="change-header">
+        <span class="change-source">ExxonMobil | Investor Relations</span>
+        <span class="date-pill">Jan 12</span>
+        <span class="change-type-badge badge-ma">M&A</span>
+      </div>
+      <p class="change-desc">
+        Acquisition update: ExxonMobil's $59.5B all-stock merger with Pioneer Natural Resources received FTC conditional approval. ExxonMobil to acquire all outstanding Pioneer shares at a fixed exchange ratio of 2.3234 ExxonMobil shares per Pioneer share. Deal creates the largest Permian Basin producer with 1.4M+ net acres.
+      </p>
+      <p class="change-significance"><strong>Significance:</strong> largest energy sector deal since 2015 — doubles ExxonMobil's Permian production. FTC required Pioneer's founder Scott Sheffield to be barred from the combined board. Closing expected Q2 2024.</p>
+    </div>
+
+    <!-- Deal 4: HPE / Juniper -->
+    <div class="change-item">
+      <div class="change-header">
+        <span class="change-source">Hewlett Packard Enterprise | Press Releases</span>
+        <span class="date-pill">Jan 9</span>
+        <span class="change-type-badge badge-ma">M&A</span>
+      </div>
+      <p class="change-desc">
+        New press release: "HPE to Acquire Juniper Networks." All-cash offer at $40.00 per share, approximately $14.0 billion enterprise value. Combination creates an AI-native networking leader with end-to-end portfolio spanning campus, branch, data center, and cloud networking.
+      </p>
+      <p class="change-significance"><strong>Significance:</strong> HPE's largest-ever acquisition — positions combined company to compete with Cisco in AI-driven networking. Subject to DOJ antitrust review and international regulatory approvals.</p>
+    </div>
+  </div>
+
+  <!-- ═══════ M&A ACTIVITY TABLE ═══════ -->
+  <div class="ma-table-section">
+    <h2>M&A Activity Extracted from Press Releases <span class="ai-badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0V2a.5.5 0 0 1 .5-.5zm0 10a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2a.5.5 0 0 1 .5-.5zm7-3.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM4 8a.5.5 0 0 1-.5.5H1.5a.5.5 0 0 1 0-1h2A.5.5 0 0 1 4 8zm8.485-4.485a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0z"/></svg> AI-generated</span></h2>
+    <p class="table-subtitle">6 M&A transactions detected from monitored S&P 500 investor relations pages · Total deal value: $139.9B</p>
+
+    <table class="ma-table">
+      <thead>
+        <tr>
+          <th>Acquiring Company</th>
+          <th>Target Company</th>
+          <th>Deal Amount</th>
+          <th>Payment</th>
+          <th>Expected Closing</th>
+          <th>Regulatory Approval</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="company-name">ExxonMobil</span> <span class="ticker">XOM</span></td>
+          <td><span class="company-name">Pioneer Natural Resources</span> <span class="ticker">PXD</span></td>
+          <td class="amount">$59.5B</td>
+          <td><span class="payment-badge payment-stock">Stock</span></td>
+          <td>Q2 2024</td>
+          <td><span class="reg-yes">Y</span> — FTC (conditional)</td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Capital One Financial</span> <span class="ticker">COF</span></td>
+          <td><span class="company-name">Discover Financial Services</span> <span class="ticker">DFS</span></td>
+          <td class="amount">$35.3B</td>
+          <td><span class="payment-badge payment-stock">Stock</span></td>
+          <td>Late 2024 / Early 2025</td>
+          <td><span class="reg-yes">Y</span> — Fed, OCC</td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Novo Holdings</span> <span class="ticker">Private</span></td>
+          <td><span class="company-name">Catalent Inc.</span> <span class="ticker">CTLT</span></td>
+          <td class="amount">$16.5B</td>
+          <td><span class="payment-badge payment-cash">Cash</span></td>
+          <td>Late 2024</td>
+          <td><span class="reg-yes">Y</span> — FTC</td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Hewlett Packard Enterprise</span> <span class="ticker">HPE</span></td>
+          <td><span class="company-name">Juniper Networks</span> <span class="ticker">JNPR</span></td>
+          <td class="amount">$14.0B</td>
+          <td><span class="payment-badge payment-cash">Cash</span></td>
+          <td>Late 2024 / Early 2025</td>
+          <td><span class="reg-yes">Y</span> — DOJ</td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Johnson & Johnson</span> <span class="ticker">JNJ</span></td>
+          <td><span class="company-name">Shockwave Medical</span> <span class="ticker">SWAV</span></td>
+          <td class="amount">$13.1B</td>
+          <td><span class="payment-badge payment-cash">Cash</span></td>
+          <td>Mid-2024</td>
+          <td><span class="reg-yes">Y</span> — HSR</td>
+        </tr>
+        <tr>
+          <td><span class="company-name">Synopsys</span> <span class="ticker">SNPS</span></td>
+          <td><span class="company-name">Ansys Inc.</span> <span class="ticker">ANSS</span></td>
+          <td class="amount">$35.0B</td>
+          <td><span class="payment-badge payment-both">Cash + Stock</span></td>
+          <td>H1 2025</td>
+          <td><span class="reg-yes">Y</span> — DOJ, EC</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Other Changes -->
+  <div class="other-changes">
+    <h2>Other Changes</h2>
+    <ul>
+      <li>The report covers 127 monitored S&P 500 investor relations and newsroom pages. Beyond the 6 M&A announcements highlighted above, <strong>23 additional changes</strong> were detected: 9 quarterly earnings press releases, 5 executive appointment announcements, 4 share repurchase program updates, 3 SEC filing notifications, and 2 dividend declaration changes.</li>
+      <li>Estimated review workload: <strong>medium</strong> — prioritize the Capital One / Discover deal (<a href="#">investor.capitalone.com</a>) and J&J / Shockwave deal (<a href="#">businesswire.com</a>) for immediate analysis. The ExxonMobil / Pioneer closing update and HPE / Juniper regulatory timeline warrant follow-up tracking.</li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>
