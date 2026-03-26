@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Copy Review: Visualping Reports Launch Email</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    :root {
+      --bg: #F8F9FB;
+      --surface: #FFFFFF;
+      --border: #E5E9F1;
+      --text: #1A1A2E;
+      --text-secondary: #5A5A72;
+      --accent: #0B51AE;
+      --accent-light: #EAF1FF;
+      --red: #D64045;
+      --red-bg: #FEF2F2;
+      --red-border: #FECACA;
+      --amber: #B45309;
+      --amber-bg: #FFFBEB;
+      --amber-border: #FDE68A;
+      --green: #047857;
+      --green-bg: #ECFDF5;
+      --green-border: #A7F3D0;
+      --blue: #1D4ED8;
+      --blue-bg: #EFF6FF;
+      --blue-border: #BFDBFE;
+      --purple: #6D28D9;
+      --purple-bg: #F5F3FF;
+      --purple-border: #DDD6FE;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 32px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    .meta-grid strong { color: var(--text); font-weight: 600; }
+
+    /* Part headers */
+    .part-header {
+      margin: 56px 0 24px;
+      padding: 20px 24px;
+      background: var(--accent);
+      color: #FFFFFF;
+      border-radius: 8px;
+    }
+    .part-header h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0;
+    }
+    .part-header p {
+      font-size: 14px;
+      margin-top: 4px;
+      opacity: 0.85;
+    }
+
+    /* Section headers */
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 32px 0 12px;
+      color: var(--text);
+    }
+
+    p { margin-bottom: 12px; font-size: 15px; }
+
+    /* Issue cards */
+    .issue-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 16px 0;
+      border-left: 4px solid var(--border);
+    }
+    .issue-card.high { border-left-color: var(--red); }
+    .issue-card.medium { border-left-color: var(--amber); }
+    .issue-card.low { border-left-color: var(--blue); }
+    .issue-card.confirmed { border-left-color: var(--green); }
+    .issue-card.rewrite { border-left-color: var(--purple); }
+
+    .issue-id {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .issue-id.high { color: var(--red); }
+    .issue-id.medium { color: var(--amber); }
+    .issue-id.low { color: var(--blue); }
+    .issue-id.confirmed { color: var(--green); }
+    .issue-id.rewrite { color: var(--purple); }
+
+    .issue-card h4 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    .label-row {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+      margin: 12px 0 4px;
+    }
+
+    .copy-block {
+      background: #F3F4F6;
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 4px 0 12px;
+      border: 1px solid #E5E7EB;
+      color: var(--text);
+    }
+    .copy-block em { font-style: italic; }
+    .copy-block del {
+      color: var(--red);
+      text-decoration: line-through;
+      background: var(--red-bg);
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+    .copy-block ins {
+      color: var(--green);
+      text-decoration: none;
+      background: var(--green-bg);
+      padding: 0 2px;
+      border-radius: 2px;
+      font-weight: 500;
+    }
+
+    /* Verdict badges */
+    .verdict {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin: 4px 0 8px;
+    }
+    .verdict.inaccurate { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+    .verdict.soft { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+    .verdict.accurate { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+    .verdict.verify { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+
+    /* Score badges */
+    .score {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      margin: 4px 0 8px;
+    }
+    .score-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 24px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .score-num.low { background: var(--red-bg); color: var(--red); }
+    .score-num.mid { background: var(--amber-bg); color: var(--amber); }
+    .score-num.high { background: var(--green-bg); color: var(--green); }
+
+    /* Tables */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 16px 0;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      background: var(--surface);
+    }
+    th {
+      background: #F9FAFB;
+      font-weight: 600;
+      text-align: left;
+      padding: 10px 14px;
+      border-bottom: 2px solid var(--border);
+      color: var(--text);
+      white-space: nowrap;
+    }
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #F3F4F6;
+      vertical-align: top;
+      color: var(--text);
+    }
+    tr:last-child td { border-bottom: none; }
+
+    /* Callout boxes */
+    .callout {
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .callout.shleyner {
+      background: var(--purple-bg);
+      border: 1px solid var(--purple-border);
+      color: var(--purple);
+    }
+    .callout.shleyner strong { color: var(--purple); }
+    .callout.action {
+      background: var(--accent-light);
+      border: 1px solid #C2D9F7;
+    }
+
+    /* Priority section */
+    .priority-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 16px 0;
+    }
+    .priority-section h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .priority-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .priority-dot.must { background: var(--red); }
+    .priority-dot.should { background: var(--amber); }
+    .priority-dot.rec { background: var(--blue); }
+    .priority-section ol {
+      margin: 0;
+      padding-left: 20px;
+      font-size: 14px;
+    }
+    .priority-section li { margin-bottom: 6px; }
+
+    /* Rewrite card */
+    .rewrite-card {
+      background: var(--surface);
+      border: 1px solid var(--purple-border);
+      border-left: 4px solid var(--purple);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 20px 0;
+    }
+    .rewrite-num {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--purple);
+      margin-bottom: 6px;
+    }
+    .rewrite-card h4 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .rewrite-card .loc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+    }
+    .rewrite-rationale {
+      background: var(--purple-bg);
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-top: 12px;
+      color: #4C1D95;
+    }
+    .rewrite-rationale strong { font-weight: 600; }
+    .arrow-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--purple);
+      margin: 10px 0 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Series section styling */
+    .series-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 16px 0;
+    }
+    .series-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 3px 10px;
+      border-radius: 4px;
+      background: var(--accent-light);
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    /* Checklist */
+    .checklist { list-style: none; padding: 0; margin: 16px 0; }
+    .checklist li {
+      padding: 6px 0 6px 28px;
+      position: relative;
+      font-size: 14px;
+    }
+    .checklist li::before {
+      content: "\2713";
+      position: absolute;
+      left: 4px;
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .container { padding: 24px 16px 60px; }
+      .header h1 { font-size: 22px; }
+      .meta-grid { grid-template-columns: 1fr; }
+      .part-header { padding: 16px 20px; }
+      .part-header h2 { font-size: 18px; }
+      .issue-card, .rewrite-card, .series-card, .priority-section { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Copy Review: Visualping Reports Launch Email &amp; Series</h1>
+    <div class="meta-grid">
+      <div><strong>Reviewer lens:</strong> Eddie Shleyner (VeryGoodCopy)</div>
+      <div><strong>Date:</strong> March 26, 2026</div>
+      <div><strong>Primary target:</strong> reports-launch-email.html</div>
+      <div><strong>Secondary:</strong> 01-email-series.md (5 segments)</div>
+      <div><strong>Source of truth:</strong> Product guide + help article</div>
+      <div><strong>Prior review:</strong> GTM Review (Feb 10) &mdash; structural only</div>
+    </div>
+  </div>
+
+  <!-- ======================================== -->
+  <!-- PART 1: VERACITY AUDIT -->
+  <!-- ======================================== -->
+  <div class="part-header">
+    <h2>Part 1: Veracity Audit</h2>
+    <p>Line-by-line fact-check of every claim against product documentation</p>
+  </div>
+
+  <!-- 1.1 -->
+  <div class="issue-card high">
+    <div class="issue-id high">1.1 &mdash; HIGH SEVERITY</div>
+    <h4>"pulls every change across your monitored pages"</h4>
+    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:8px;">Hero subline, line 96</p>
+
+    <div class="label-row">Current Copy</div>
+    <div class="copy-block">Visualping Reports pulls every change across your monitored pages into one AI-summarized briefing, on your schedule.</div>
+
+    <div class="label-row">Source of Truth</div>
+    <div class="copy-block">Product guide: "Before generating a report, you <strong>select which monitoring jobs to include</strong> using the checkboxes in your job list. You can include all jobs in a workspace or cherry-pick specific ones."</div>
+
+    <span class="verdict inaccurate">Inaccurate</span>
+    <p style="font-size:14px;">Reports does not auto-pull "every change." The user explicitly selects which jobs to include. A reader who sets up Reports expecting auto-aggregation will hit confusion at the job-selection screen. This is the first sentence processed after the headline &mdash; it sets an expectation the product doesn't fulfill by default.</p>
+  </div>
+
+  <!-- 1.2 -->
+  <div class="issue-card medium">
+    <div class="issue-id medium">1.2 &mdash; MEDIUM SEVERITY</div>
+    <h4>"Choose daily or weekly delivery"</h4>
+    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:8px;">Feature 3, line 241</p>
+
+    <div class="label-row">Current Copy</div>
+    <div class="copy-block">Choose daily or weekly delivery.</div>
+
+    <div class="label-row">Source of Truth</div>
+    <div class="copy-block">Help article: "Choose how often the report runs: <strong>daily, weekly, or monthly</strong>."</div>
+
+    <span class="verdict inaccurate">Omission</span>
+    <p style="font-size:14px;">Monthly delivery exists but is absent from the email. Users who need monthly cadence (compliance audits, board reporting) won't know it's available. This same omission repeats in all 5 segment emails.</p>
+  </div>
+
+  <!-- 1.3 -->
+  <div class="issue-card low">
+    <div class="issue-id low">1.3 &mdash; LOW-MEDIUM SEVERITY</div>
+    <h4>"One paragraph, and you're briefed"</h4>
+    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:8px;">Feature 1, line 150</p>
+
+    <div class="label-row">Current Copy</div>
+    <div class="copy-block">Reports uses AI to summarize every detected change into a written analysis. One paragraph, and you're briefed.</div>
+
+    <div class="label-row">Source of Truth</div>
+    <div class="copy-block">Product guide troubleshooting: "AI summaries work best when there are multiple changes to synthesize. A report covering only one or two minor changes may produce a brief summary."</div>
+
+    <span class="verdict soft">Soft Overstatement</span>
+    <p style="font-size:14px;">The AI summary may be multiple paragraphs (high change volume) or underwhelming (few changes). The spirit is accurate &mdash; it's concise &mdash; but the literal "one paragraph" claim isn't guaranteed.</p>
+  </div>
+
+  <!-- Confirmed claims -->
+  <div class="issue-card confirmed">
+    <div class="issue-id confirmed">1.4&ndash;1.8 &mdash; CONFIRMED ACCURATE</div>
+    <h4>Verified Claims (No Changes Needed)</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Claim</th><th>Source</th></tr>
+        <tr><td>"No login required on their end"</td><td>Help article: "Recipients do not need a Visualping account"</td></tr>
+        <tr><td>"Export as PDF, Excel, or CSV"</td><td>Both docs confirm all three formats</td></tr>
+        <tr><td>"Setup takes under 2 minutes"</td><td>Product guide: "About 2 minutes for your first report"</td></tr>
+        <tr><td>"Current, Previous, and Markup comparison layouts"</td><td>Both docs confirm all three layout options</td></tr>
+        <tr><td>"Flag changes, add comments"</td><td>Help article confirms Flag, Comment, Hide actions</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 1.9 -->
+  <div class="issue-card low">
+    <div class="issue-id low">1.9 &mdash; VERIFY BEFORE SEND</div>
+    <h4>"Trusted by 85% of Fortune 500 companies"</h4>
+    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:8px;">Footer, line 425</p>
+    <span class="verdict verify">Needs Verification</span>
+    <p style="font-size:14px;">Appears across VP marketing materials and the GTM review. Fortune 500 composition changes annually. Confirm this stat is current as of 2026 and that the methodology is defensible if challenged.</p>
+  </div>
+
+  <!-- Confirmed claims 2 -->
+  <div class="issue-card confirmed">
+    <div class="issue-id confirmed">1.10&ndash;1.12 &mdash; CONFIRMED</div>
+    <h4>Additional Verified Claims</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Claim</th><th>Verdict</th></tr>
+        <tr><td>"Reports is included free with Business plans"</td><td>Accurate. Help article confirms.</td></tr>
+        <tr><td>"the AI catches patterns you'd miss scanning alerts one by one"</td><td>Defensible. Standard benefit framing.</td></tr>
+        <tr><td>"build a decision trail your team can reference"</td><td>Accurate per docs, but "decision trail" is jargon. See Part 2.</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Q1 claims -->
+  <div class="issue-card low">
+    <div class="issue-id low">1.13&ndash;1.14 &mdash; NOT VERIFIED (Q1 SECTION)</div>
+    <h4>Q1 Claims Outside Reports Scope</h4>
+    <p style="font-size:14px;"><strong>"7,000+ apps with 12 ready-made automation templates"</strong> (Zapier) &mdash; verify current figures before send. Zapier's app count changes frequently.</p>
+    <p style="font-size:14px;"><strong>"Upgraded AI models for fewer false positives"</strong> (Important Alerts) &mdash; confirm with product team.</p>
+  </div>
+
+  <!-- Veracity summary table -->
+  <h3>Veracity Summary</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>#</th><th>Claim</th><th>Verdict</th><th>Severity</th><th>Action</th></tr>
+      <tr><td>1.1</td><td>"pulls every change"</td><td style="color:var(--red);font-weight:600;">Inaccurate</td><td>High</td><td>Rewrite</td></tr>
+      <tr><td>1.2</td><td>"daily or weekly"</td><td style="color:var(--red);font-weight:600;">Omits monthly</td><td>Medium</td><td>Add monthly</td></tr>
+      <tr><td>1.3</td><td>"One paragraph"</td><td style="color:var(--amber);font-weight:600;">Soft overstatement</td><td>Low-med</td><td>Qualify</td></tr>
+      <tr><td>1.4</td><td>"No login required"</td><td style="color:var(--green);font-weight:600;">Accurate</td><td>&mdash;</td><td>Keep</td></tr>
+      <tr><td>1.5</td><td>"PDF, Excel, CSV"</td><td style="color:var(--green);font-weight:600;">Accurate</td><td>&mdash;</td><td>Keep</td></tr>
+      <tr><td>1.6</td><td>"Under 2 minutes"</td><td style="color:var(--green);font-weight:600;">Accurate</td><td>&mdash;</td><td>Keep</td></tr>
+      <tr><td>1.7</td><td>Layout options</td><td style="color:var(--green);font-weight:600;">Accurate</td><td>&mdash;</td><td>Keep</td></tr>
+      <tr><td>1.8</td><td>Flag + comments</td><td style="color:var(--green);font-weight:600;">Accurate</td><td>&mdash;</td><td>Keep</td></tr>
+      <tr><td>1.9</td><td>"85% of Fortune 500"</td><td style="color:var(--blue);font-weight:600;">Needs verification</td><td>Low</td><td>Verify</td></tr>
+      <tr><td>1.10</td><td>"Free with Business"</td><td style="color:var(--green);font-weight:600;">Accurate</td><td>&mdash;</td><td>Keep</td></tr>
+      <tr><td>1.11</td><td>"catches patterns"</td><td style="color:var(--green);font-weight:600;">Defensible</td><td>&mdash;</td><td>Keep</td></tr>
+      <tr><td>1.12</td><td>"decision trail"</td><td style="color:var(--green);font-weight:600;">Accurate</td><td>&mdash;</td><td>Rewrite for clarity</td></tr>
+      <tr><td>1.13</td><td>"7,000+ apps"</td><td style="color:var(--blue);font-weight:600;">Not verified</td><td>Low</td><td>Verify</td></tr>
+      <tr><td>1.14</td><td>"Fewer false positives"</td><td style="color:var(--blue);font-weight:600;">Not verified</td><td>Low</td><td>Verify</td></tr>
+    </table>
+  </div>
+
+  <!-- ======================================== -->
+  <!-- PART 2: CLARITY REVIEW -->
+  <!-- ======================================== -->
+  <div class="part-header">
+    <h2>Part 2: Clarity Review</h2>
+    <p>Shleyner's test: does a distracted reader scanning on mobile understand this in one pass?</p>
+  </div>
+
+  <!-- 2.1 -->
+  <div class="issue-card medium">
+    <h4>Headline: "From Alerts to Intelligence"</h4>
+    <div class="score">
+      <span class="score-num low">4/10</span>
+      <span>Clarity</span>
+    </div>
+    <div class="copy-block">From Alerts to Intelligence</div>
+    <p style="font-size:14px;">A product positioning statement, not a reader-facing headline. It describes a conceptual journey but doesn't tell the reader what happens to <em>them</em>. No "you." No action. No outcome the reader can picture.</p>
+    <div class="callout shleyner">
+      <strong>Shleyner principle:</strong> The reader should see themselves in the headline. Compare: "Your Alerts Now Come With a Summary" &mdash; instantly understood. "One Briefing Instead of 47 Alerts" &mdash; even better, because it's specific.
+    </div>
+  </div>
+
+  <!-- 2.2 -->
+  <div class="issue-card low">
+    <h4>Hero Subline</h4>
+    <div class="score">
+      <span class="score-num mid">6/10</span>
+      <span>Clarity</span>
+    </div>
+    <div class="copy-block">Visualping Reports pulls every change across your monitored pages into one AI-summarized briefing, on your schedule.</div>
+    <p style="font-size:14px;">22 words doing three jobs (aggregation + AI summary + scheduling). On mobile, this wraps to 3&ndash;4 lines. "AI-summarized briefing" is a compound modifier that slows reading. This subline is doing the headline's job.</p>
+  </div>
+
+  <!-- 2.3-2.5 Feature headings -->
+  <div class="issue-card medium">
+    <h4>All Three Feature Headings</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Heading</th><th>Score</th><th>Issue</th></tr>
+        <tr>
+          <td><strong>1.</strong> AI Summary &amp; Analysis</td>
+          <td><span class="score-num low" style="font-size:11px;width:30px;height:20px;">3/10</span></td>
+          <td>Product label. Tells you what the button is called, not what it does for you.</td>
+        </tr>
+        <tr>
+          <td><strong>2.</strong> Visual Diffs &amp; Team Annotations</td>
+          <td><span class="score-num low" style="font-size:11px;width:30px;height:20px;">3/10</span></td>
+          <td>"Visual Diffs" is technical. "Team Annotations" is descriptive but not outcome-oriented.</td>
+        </tr>
+        <tr>
+          <td><strong>3.</strong> Scheduled Delivery &amp; Export</td>
+          <td><span class="score-num low" style="font-size:11px;width:30px;height:20px;">4/10</span></td>
+          <td>Slightly better &mdash; "Scheduled Delivery" implies an outcome. "Export" is product-speak.</td>
+        </tr>
+      </table>
+    </div>
+    <div class="callout shleyner">
+      <strong>Shleyner principle:</strong> Feature headings should be outcomes. A reader scanning numbered headings without reading body copy should understand: (1) what they'll experience, (2) what they'll see, (3) what they'll get. Not what the UI labels say.
+    </div>
+  </div>
+
+  <!-- 2.6-2.8 Body copy -->
+  <div class="issue-card confirmed">
+    <h4>Feature 1 Body</h4>
+    <div class="score">
+      <span class="score-num high">7/10</span>
+      <span>Clarity</span>
+    </div>
+    <div class="copy-block">Reports uses AI to summarize every detected change into a written analysis. <strong>One paragraph, and you're briefed.</strong></div>
+    <p style="font-size:14px;">"One paragraph, and you're briefed" is the strongest line in the email. Concrete, short, reader-centric. The first sentence is weaker &mdash; "every detected change" is passive/technical, "written analysis" is vague.</p>
+  </div>
+
+  <div class="issue-card medium">
+    <h4>Feature 2 Body &mdash; "decision trail"</h4>
+    <div class="score">
+      <span class="score-num low">4/10</span>
+      <span>Clarity</span>
+    </div>
+    <div class="copy-block">Flag changes, add comments, and build a <strong>decision trail</strong> your team can reference.</div>
+    <p style="font-size:14px;">"Decision trail" is the weakest phrase in the email. What does it look like? A log? A document? A thread? The reader does interpretive work. "Flag changes, add comments" (concrete verbs) are clear &mdash; then the thread gets lost.</p>
+  </div>
+
+  <div class="issue-card low">
+    <h4>Feature 2 Body &mdash; UI Label Enumeration</h4>
+    <div class="score">
+      <span class="score-num mid">5/10</span>
+      <span>Clarity</span>
+    </div>
+    <div class="copy-block">See exactly what changed with Current, Previous, and Markup comparison layouts, all inline in your report.</div>
+    <p style="font-size:14px;">"Current, Previous, and Markup comparison layouts" is an enumeration of UI labels a non-user can't parse. "All inline in your report" is filler &mdash; where else would they be?</p>
+  </div>
+
+  <!-- High performers -->
+  <div class="issue-card confirmed">
+    <h4>Strong Performers</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Element</th><th>Score</th><th>Why It Works</th></tr>
+        <tr>
+          <td>CTA: "Get Your First Briefing"</td>
+          <td><span class="score-num high" style="font-size:11px;width:30px;height:20px;">8/10</span></td>
+          <td>Output-centric. "First" implies ease, not commitment.</td>
+        </tr>
+        <tr>
+          <td>Feature 3 body</td>
+          <td><span class="score-num high" style="font-size:11px;width:30px;height:20px;">7/10</span></td>
+          <td>Concrete, scannable. "No login required" is perfect.</td>
+        </tr>
+        <tr>
+          <td>Secondary CTA: "Upgrade to Business"</td>
+          <td><span class="score-num high" style="font-size:11px;width:30px;height:20px;">7/10</span></td>
+          <td>Clear action, clear destination.</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Low performers -->
+  <div class="issue-card medium">
+    <h4>Weak Performers</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Element</th><th>Score</th><th>Issue</th></tr>
+        <tr>
+          <td>Sign-off: "Stay in the know"</td>
+          <td><span class="score-num low" style="font-size:11px;width:30px;height:20px;">3/10</span></td>
+          <td>Generic. No connection to Reports, briefings, or the reader's workflow.</td>
+        </tr>
+        <tr>
+          <td>Preheader (second half)</td>
+          <td><span class="score-num mid" style="font-size:11px;width:30px;height:20px;">6/10</span></td>
+          <td>"Reports is now live on Business plans" is announcer-voice.</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ======================================== -->
+  <!-- PART 3: INTEREST REVIEW -->
+  <!-- ======================================== -->
+  <div class="part-header">
+    <h2>Part 3: Interest Review</h2>
+    <p>One reader, one message. Specificity creates credibility. The reader is the hero.</p>
+  </div>
+
+  <div class="issue-card medium">
+    <h4>One Reader, One Message</h4>
+    <span class="verdict inaccurate">Fails</span>
+    <p style="font-size:14px;">The email contains <strong>six distinct value propositions</strong>: three Reports feature sections + three Q1 items (Zapier, API Keys, Important Alerts). By the time the reader hits the CTA, they've been pulled in six directions.</p>
+    <div class="callout shleyner">
+      <strong>Shleyner would:</strong> Cut the Q1 section entirely. Reports deserves its own moment. Zapier, API Keys, and Important Alerts deserve their own emails. Bundling dilutes Reports and gives the reader reasons to stop reading before the CTA.
+    </div>
+  </div>
+
+  <div class="issue-card high">
+    <h4>Specificity Creates Credibility</h4>
+    <span class="verdict inaccurate">Fails</span>
+    <p style="font-size:14px;">Almost no concrete details anywhere. The email is built on abstract benefits:</p>
+    <div class="copy-block">
+      "patterns you'd miss" &mdash; <em>what patterns? Give one example.</em><br>
+      "decision trail" &mdash; <em>what does that look like?</em><br>
+      "intelligence" &mdash; <em>intelligence about what, specifically?</em><br>
+      "one AI-summarized briefing" &mdash; <em>what does it say? Show me a sentence.</em>
+    </div>
+    <div class="callout shleyner">
+      <strong>Shleyner always includes one concrete scenario.</strong> A single example would do more for conversion than all three feature sections combined:<br><br>
+      <em>"Last week, a user's Report flagged that three competitors updated their pricing pages within 48 hours. The AI summary connected the dots: an industry-wide price increase was forming. That insight took 30 seconds to read."</em>
+    </div>
+  </div>
+
+  <div class="issue-card medium">
+    <h4>The Reader Is the Hero</h4>
+    <span class="verdict soft">Partial</span>
+    <p style="font-size:14px;">Count the subjects in feature-section sentences:</p>
+    <div class="copy-block">
+      "<strong>Visualping Reports</strong> pulls..." (product is the actor)<br>
+      "<strong>Reports</strong> uses AI to summarize..." (product is the actor)<br>
+      "<strong>Reports</strong> answers that." (product is the actor)<br>
+      "<strong>the AI</strong> catches patterns..." (product is the actor)
+    </div>
+    <p style="font-size:14px;">Now compare the greeting: "<strong>You</strong> get alerts when things change. But what do all those changes <em>mean together</em>?" Here, <em>you</em> is the subject. This is why the greeting is the best part of the email &mdash; it's the only section written from the reader's perspective.</p>
+  </div>
+
+  <div class="issue-card low">
+    <h4>Tension and Release</h4>
+    <span class="verdict soft">Partial</span>
+    <p style="font-size:14px;">"What do all those changes <em>mean together</em>?" creates genuine tension. But the release transitions to a product announcement ("Reports is now available") and then enumerates features. The tension dissipates into a spec sheet. Shleyner would hold the tension longer and release it with a concrete example before introducing features.</p>
+  </div>
+
+  <div class="issue-card low">
+    <h4>"More from Q1" Section</h4>
+    <p style="font-size:14px;">Transforms a focused product announcement into a newsletter digest. The three Q1 items compete for attention with Reports. A reader who clicks "Learn more" on Zapier has left the Reports funnel entirely. If the items must stay (stakeholder requirement), they should be visually smaller and positioned after a clear break signaling "the main message is over."</p>
+  </div>
+
+  <!-- Interest summary table -->
+  <h3>Interest Summary</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Principle</th><th>Verdict</th><th>Key Issue</th></tr>
+      <tr><td>One reader, one message</td><td style="color:var(--red);font-weight:600;">Fails</td><td>Q1 section + 3 features = 6 propositions</td></tr>
+      <tr><td>Specificity creates credibility</td><td style="color:var(--red);font-weight:600;">Fails</td><td>No concrete scenario or example anywhere</td></tr>
+      <tr><td>Reader is the hero</td><td style="color:var(--amber);font-weight:600;">Partial</td><td>Greeting succeeds; features revert to product-as-hero</td></tr>
+      <tr><td>Tension and release</td><td style="color:var(--amber);font-weight:600;">Partial</td><td>Greeting creates tension; features dissipate it</td></tr>
+    </table>
+  </div>
+
+  <!-- ======================================== -->
+  <!-- PART 4: EMAIL SERIES REVIEW -->
+  <!-- ======================================== -->
+  <div class="part-header">
+    <h2>Part 4: Email Series Review</h2>
+    <p>Same 3-lens review applied to all 5 segment variants (A through E)</p>
+  </div>
+
+  <!-- Email A -->
+  <div class="series-card">
+    <div class="series-badge">Email A</div>
+    <h4>Power Users (20+ Jobs)</h4>
+
+    <div class="label-row">Hook</div>
+    <div class="copy-block">Last week you received [X] alerts across [X] jobs. Want to know what they all mean &mdash; in one paragraph?</div>
+    <div class="score"><span class="score-num high">8/10</span> Clarity</div>
+    <p style="font-size:14px;">Personalized data + concrete promise. Strong hook.</p>
+
+    <div class="label-row">Issue: "Tier 1.5" Jargon</div>
+    <div class="copy-block">Most monitoring tools alert you when things change. Enterprise CI platforms like Klue analyze what it means &mdash; for $16K+/yr. Reports gives you the analysis layer at a fraction of the cost. <strong>We call it Tier 1.5.</strong></div>
+    <div class="score"><span class="score-num low">2/10</span> Clarity</div>
+    <p style="font-size:14px;">"Tier 1.5" is internal positioning language that leaked into customer copy. It means nothing to the reader. Naming Klue in a customer email also educates readers about competitors they may not know exist.</p>
+
+    <div class="label-row">Also Flagged</div>
+    <p style="font-size:14px;">"One paragraph" soft overstatement (1.3). "Daily or weekly" missing monthly (1.2).</p>
+  </div>
+
+  <!-- Email B -->
+  <div class="series-card">
+    <div class="series-badge">Email B</div>
+    <h4>Workspace / Team Users</h4>
+
+    <div class="label-row">Hook</div>
+    <div class="copy-block">When [X] people rely on the same monitoring data, someone becomes the human newsletter. That's probably you.</div>
+    <div class="score"><span class="score-num high">9/10</span> Clarity</div>
+    <p style="font-size:14px;">The "human newsletter" metaphor is the best line in the entire series. Concrete, visceral, self-identifying.</p>
+
+    <div class="label-row">Issue: Architecture Detail in Benefits Copy</div>
+    <div class="copy-block">Different workspaces can generate different reports.</div>
+    <div class="score"><span class="score-num mid">5/10</span> Clarity</div>
+    <p style="font-size:14px;">Workspace-report topology belongs in a help article, not a benefits email. Rewrite as outcome: "Different teams can get different briefings."</p>
+  </div>
+
+  <!-- Email C -->
+  <div class="series-card">
+    <div class="series-badge">Email C</div>
+    <h4>Existing Reports / Export Users</h4>
+
+    <div class="label-row">Hook</div>
+    <div class="copy-block">You have already generated [X] reports from VisualPing, so you know the value of getting change data out of the dashboard and into a format you can use.</div>
+    <div class="score"><span class="score-num high">7/10</span> Clarity</div>
+    <p style="font-size:14px;">Acknowledges history, but "getting change data out of the dashboard and into a format you can use" is 16 words for "exporting data."</p>
+
+    <div class="label-row">Highlight</div>
+    <div class="copy-block">Scheduled delivery. No more manual exports.</div>
+    <div class="score"><span class="score-num high">9/10</span> Clarity</div>
+    <p style="font-size:14px;">Six words, clear outcome. This is how every feature should be introduced in email.</p>
+  </div>
+
+  <!-- Email D -->
+  <div class="series-card">
+    <div class="series-badge">Email D</div>
+    <h4>Personal Plan Users (Upgrade Trial)</h4>
+
+    <div class="label-row">Hook</div>
+    <div class="copy-block">You're monitoring [X] pages. Every time something changes, you get an alert. That's valuable. But here's the question those alerts can't answer: <strong>what does it all mean together?</strong></div>
+    <div class="score"><span class="score-num high">8/10</span> Clarity</div>
+    <p style="font-size:14px;">Progressive build from validation to gap. Earns the right to pitch.</p>
+
+    <div class="label-row">Also Flagged</div>
+    <p style="font-size:14px;">"Daily or weekly cadence" &mdash; missing monthly (1.2). Verify "no credit card required" for the Business trial path.</p>
+  </div>
+
+  <!-- Email E -->
+  <div class="series-card">
+    <div class="series-badge">Email E</div>
+    <h4>Churned Users (Inactive 60+ Days)</h4>
+
+    <div class="label-row">Hook</div>
+    <div class="copy-block">It's been a while since you logged into VisualPing. A lot has changed &mdash; and the biggest change is relevant to why you signed up in the first place.</div>
+    <div class="score"><span class="score-num high">7/10</span> Clarity</div>
+    <p style="font-size:14px;">Second sentence is strong ("relevant to why you signed up"). First sentence is filler &mdash; the reader knows they haven't logged in.</p>
+
+    <div class="label-row">Highlight</div>
+    <div class="copy-block">The monitoring tool you left just added an intelligence layer. Your account is still active.</div>
+    <p style="font-size:14px;">The email's best moment. Combines product news with a low-friction re-entry prompt.</p>
+  </div>
+
+  <!-- Cross-series issues -->
+  <h3>Cross-Series Issues</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Issue</th><th>Emails Affected</th><th>Type</th></tr>
+      <tr><td>"Daily or weekly" omits monthly</td><td>A, C, D, E</td><td style="color:var(--red);font-weight:600;">Veracity</td></tr>
+      <tr><td>"One paragraph" soft overstatement</td><td>A, D, E</td><td style="color:var(--amber);font-weight:600;">Veracity</td></tr>
+      <tr><td>"Tier 1.5" product jargon</td><td>A</td><td style="color:var(--amber);font-weight:600;">Clarity</td></tr>
+      <tr><td>Klue/Crayon named in customer email</td><td>A</td><td style="color:var(--amber);font-weight:600;">Interest/risk</td></tr>
+      <tr><td>No concrete scenario in any email</td><td>All</td><td style="color:var(--red);font-weight:600;">Interest</td></tr>
+      <tr><td>Workspace architecture details in benefits copy</td><td>B</td><td style="color:var(--amber);font-weight:600;">Clarity</td></tr>
+    </table>
+  </div>
+
+  <!-- ======================================== -->
+  <!-- PART 5: RECOMMENDED REWRITES -->
+  <!-- ======================================== -->
+  <div class="part-header">
+    <h2>Part 5: Recommended Rewrites</h2>
+    <p>Specific rewrite for every issue flagged in Parts 1&ndash;4</p>
+  </div>
+
+  <!-- Rewrite 1 -->
+  <div class="rewrite-card">
+    <div class="rewrite-num">Rewrite 1</div>
+    <h4>Hero Headline</h4>
+    <div class="loc">HTML email, line 91 &bull; Lens: Clarity</div>
+
+    <div class="label-row">Current</div>
+    <div class="copy-block">From Alerts to Intelligence</div>
+
+    <div class="arrow-label">&darr; Rewrite</div>
+    <div class="copy-block" style="border-color:var(--purple-border);background:var(--purple-bg);">Every Change, One Briefing</div>
+
+    <div class="rewrite-rationale">
+      <strong>Shleyner voice:</strong> The reader doesn't care about your product's journey from alerts to intelligence. They care about what lands in their inbox. Four words. No interpretation needed. The reader sees themselves opening one email instead of 47.<br><br>
+      <strong>Alt:</strong> "Your Weekly Briefing Is Ready" (even more reader-centric, implies the feature already works for them).
+    </div>
+  </div>
+
+  <!-- Rewrite 2 -->
+  <div class="rewrite-card">
+    <div class="rewrite-num">Rewrite 2</div>
+    <h4>Hero Subline</h4>
+    <div class="loc">HTML email, line 96 &bull; Lens: Veracity + Clarity</div>
+
+    <div class="label-row">Current (22 words)</div>
+    <div class="copy-block">Visualping Reports pulls every change across your monitored pages into one AI-summarized briefing, on your schedule.</div>
+
+    <div class="arrow-label">&darr; Rewrite (19 words)</div>
+    <div class="copy-block" style="border-color:var(--purple-border);background:var(--purple-bg);">Select the pages you track, pick a cadence, and get one AI-written summary of everything that changed.</div>
+
+    <div class="rewrite-rationale">
+      Fixes veracity: front-loads "select" (user has agency, not auto-aggregation). Replaces "AI-summarized briefing" (compound modifier) with "AI-written summary" (simpler). Drops "on your schedule" for the more specific "pick a cadence." 3 fewer words.
+    </div>
+  </div>
+
+  <!-- Rewrite 3 -->
+  <div class="rewrite-card">
+    <div class="rewrite-num">Rewrite 3</div>
+    <h4>Feature 1 Heading</h4>
+    <div class="loc">HTML email, line 138 &bull; Lens: Clarity</div>
+
+    <div class="label-row">Current</div>
+    <div class="copy-block">AI Summary &amp; Analysis</div>
+
+    <div class="arrow-label">&darr; Rewrite</div>
+    <div class="copy-block" style="border-color:var(--purple-border);background:var(--purple-bg);">Read One Paragraph. Know What Changed.</div>
+
+    <div class="rewrite-rationale">
+      This is what the feature <em>does</em> for the reader. Not what it's called in the nav bar. Scanning three headings should tell the story: (1) read a paragraph, (2) see what changed, (3) get it delivered.
+    </div>
+  </div>
+
+  <!-- Rewrite 4 -->
+  <div class="rewrite-card">
+    <div class="rewrite-num">Rewrite 4</div>
+    <h4>Feature 1 Body &mdash; "One paragraph" Claim</h4>
+    <div class="loc">HTML email, line 150 &bull; Lens: Veracity + Clarity</div>
+
+    <div class="label-row">Current</div>
+    <div class="copy-block">Reports uses AI to summarize every detected change into a written analysis. One paragraph, and you're briefed.</div>
+
+    <div class="arrow-label">&darr; Rewrite</div>
+    <div class="copy-block" style="border-color:var(--purple-border);background:var(--purple-bg);">The AI reads across all the changes in your report and writes a summary. A few sentences, and you know what matters.</div>
+
+    <div class="rewrite-rationale">
+      "A few sentences" is truthful regardless of output length. "You know what matters" is the outcome. "Reads across all the changes" is more active than "summarize every detected change."
+    </div>
+  </div>
+
+  <!-- Rewrite 5 -->
+  <div class="rewrite-card">
+    <div class="rewrite-num">Rewrite 5</div>
+    <h4>Feature 2 Heading</h4>
+    <div class="loc">HTML email, line 183 &bull; Lens: Clarity</div>
+
+    <div class="label-row">Current</div>
+    <div class="copy-block">Visual Diffs &amp; Team Annotations</div>
+
+    <div class="arrow-label">&darr; Rewrite</div>
+    <div class="copy-block" style="border-color:var(--purple-border);background:var(--purple-bg);">See What Changed. Show Your Team.</div>
+
+    <div class="rewrite-rationale">
+      Two outcomes in six words. First half covers visual diffs (you see what changed). Second half covers annotations (you share it). No jargon.
+    </div>
+  </div>
+
+  <!-- Rewrite 6 -->
+  <div class="rewrite-card">
+    <div class="rewrite-num">Rewrite 6</div>
+    <h4>Feature 2 Body &mdash; "Decision Trail"</h4>
+    <div class="loc">HTML email, line 203 &bull; Lens: Clarity</div>
+
+    <div class="label-row">Current</div>
+    <div class="copy-block">Flag changes, add comments, and build a decision trail your team can reference.</div>
+
+    <div class="arrow-label">&darr; Rewrite</div>
+    <div class="copy-block" style="border-color:var(--purple-border);background:var(--purple-bg);">Flag what matters, add your take, and keep a record of what your team decided about each change.</div>
+
+    <div class="rewrite-rationale">
+      "Keep a record of what your team decided" is what a decision trail <em>is</em>, in plain language. "Add your take" is more human than "add comments." "Flag what matters" is more purposeful than "flag changes."
+    </div>
+  </div>
+
+  <!-- Rewrite 7 -->
+  <div class="rewrite-card">
+    <div class="rewrite-num">Rewrite 7</div>
+    <h4>Feature 2 Body &mdash; Layout Enumeration</h4>
+    <div class="loc">HTML email, line 200 &bull; Lens: Clarity</div>
+
+    <div class="label-row">Current</div>
+    <div class="copy-block">See exactly what changed with Current, Previous, and Markup comparison layouts, all inline in your report.</div>
+
+    <div class="arrow-label">&darr; Rewrite</div>
+    <div class="copy-block" style="border-color:var(--purple-border);background:var(--purple-bg);">Screenshots show each page before and after the change, with differences highlighted so you spot them instantly.</div>
+
+    <div class="rewrite-rationale">
+      Describes the experience, not UI labels. "Before and after" is universally understood. "Differences highlighted" covers Markup without naming it. "Spot them instantly" is the outcome.
+    </div>
+  </div>
+
+  <!-- Rewrite 8 -->
+  <div class="rewrite-card">
+    <div class="rewrite-num">Rewrite 8</div>
+    <h4>Feature 3 &mdash; Missing Monthly</h4>
+    <div class="loc">HTML email, line 241 &bull; Lens: Veracity</div>
+
+    <div class="label-row">Current</div>
+    <div class="copy-block">Choose daily or weekly delivery.</div>
+
+    <div class="arrow-label">&darr; Rewrite</div>
+    <div class="copy-block" style="border-color:var(--purple-border);background:var(--purple-bg);">Choose daily, weekly, or monthly delivery.</div>
+
+    <div class="rewrite-rationale">
+      Three extra characters. Complete accuracy.
+    </div>
+  </div>
+
+  <!-- Rewrite 9 -->
+  <div class="rewrite-card">
+    <div class="rewrite-num">Rewrite 9</div>
+    <h4>Preheader</h4>
+    <div class="loc">HTML email, line 52 &bull; Lens: Clarity</div>
+
+    <div class="label-row">Current</div>
+    <div class="copy-block">Your changes, summarized by AI. Reports is now live on Business plans.</div>
+
+    <div class="arrow-label">&darr; Rewrite</div>
+    <div class="copy-block" style="border-color:var(--purple-border);background:var(--purple-bg);">Your changes, summarized by AI. Open one briefing instead of dozens of alerts.</div>
+
+    <div class="rewrite-rationale">
+      Second sentence mirrors the reader's experience instead of announcing a product event. "Dozens of alerts" creates the contrast that drives the click.
+    </div>
+  </div>
+
+  <!-- Rewrite 10 -->
+  <div class="rewrite-card">
+    <div class="rewrite-num">Rewrite 10</div>
+    <h4>Sign-off</h4>
+    <div class="loc">HTML email, line 364 &bull; Lens: Interest</div>
+
+    <div class="label-row">Current</div>
+    <div class="copy-block">Stay in the know,</div>
+
+    <div class="arrow-label">&darr; Rewrite</div>
+    <div class="copy-block" style="border-color:var(--purple-border);background:var(--purple-bg);">Here's to fewer tabs,</div>
+
+    <div class="rewrite-rationale">
+      Ties back to the core promise (one briefing instead of many alerts). Creates a shared moment between sender and reader. Memorable without being forced.<br><br>
+      <strong>Alt:</strong> "Your briefing is waiting," (more direct, connects to CTA).
+    </div>
+  </div>
+
+  <!-- Rewrite 11 -->
+  <div class="rewrite-card">
+    <div class="rewrite-num">Rewrite 11</div>
+    <h4>Greeting &mdash; "Reports answers that"</h4>
+    <div class="loc">HTML email, line 115 &bull; Lens: Interest</div>
+
+    <div class="label-row">Current</div>
+    <div class="copy-block">You get alerts when things change. But what do all those changes <em>mean together</em>? Reports answers that.</div>
+
+    <div class="arrow-label">&darr; Rewrite</div>
+    <div class="copy-block" style="border-color:var(--purple-border);background:var(--purple-bg);">You get alerts when things change. But what do all those changes <em>mean together</em>? That's what Reports shows you.</div>
+
+    <div class="rewrite-rationale">
+      "Shows you" keeps the reader as the subject of the experience. "Answers that" makes Reports an abstract answering machine. "Shows you" implies a visual, tangible output.
+    </div>
+  </div>
+
+  <!-- Rewrite 12 -->
+  <div class="rewrite-card">
+    <div class="rewrite-num">Rewrite 12</div>
+    <h4>Email A &mdash; Remove "Tier 1.5" and Competitor Names</h4>
+    <div class="loc">01-email-series.md, Email A &bull; Lens: Clarity + Interest</div>
+
+    <div class="label-row">Current</div>
+    <div class="copy-block">Most monitoring tools alert you when things change. Enterprise CI platforms like Klue analyze what it means &mdash; for $16K+/yr. Reports gives you the analysis layer at a fraction of the cost. We call it Tier 1.5.</div>
+
+    <div class="arrow-label">&darr; Rewrite</div>
+    <div class="copy-block" style="border-color:var(--purple-border);background:var(--purple-bg);">Most monitoring tools alert you when things change. Enterprise analysis platforms do the synthesis &mdash; for $16K+/yr. Reports gives you that analysis layer without the enterprise price tag.</div>
+
+    <div class="rewrite-rationale">
+      Removes competitor name (no free advertising). Removes "Tier 1.5" (means nothing to the reader). "Without the enterprise price tag" is the reader's concern, not the positioning framework.
+    </div>
+  </div>
+
+  <!-- Rewrite 13 -->
+  <div class="rewrite-card">
+    <div class="rewrite-num">Rewrite 13</div>
+    <h4>Email A &mdash; Add Monthly to Cadence Line</h4>
+    <div class="loc">01-email-series.md, also affects C, D, E &bull; Lens: Veracity</div>
+
+    <div class="label-row">Current</div>
+    <div class="copy-block">On your schedule. Daily before your morning review. Weekly for the recap.</div>
+
+    <div class="arrow-label">&darr; Rewrite</div>
+    <div class="copy-block" style="border-color:var(--purple-border);background:var(--purple-bg);">On your schedule. Daily before your morning review. Weekly for the recap. Monthly for the board.</div>
+
+    <div class="rewrite-rationale">
+      Adds monthly and gives it a concrete use case (board reporting) that helps the reader self-select the right cadence.
+    </div>
+  </div>
+
+  <!-- Rewrite 14 -->
+  <div class="rewrite-card">
+    <div class="rewrite-num">Rewrite 14</div>
+    <h4>Email B &mdash; Workspace Architecture Detail</h4>
+    <div class="loc">01-email-series.md, Email B &bull; Lens: Clarity</div>
+
+    <div class="label-row">Current</div>
+    <div class="copy-block">Different workspaces can generate different reports.</div>
+
+    <div class="arrow-label">&darr; Rewrite</div>
+    <div class="copy-block" style="border-color:var(--purple-border);background:var(--purple-bg);">Different teams can get different briefings &mdash; just organize your monitoring by purpose.</div>
+
+    <div class="rewrite-rationale">
+      Describes the outcome (different teams, different briefings) without exposing workspace mechanics. "Organize by purpose" is actionable without being technical.
+    </div>
+  </div>
+
+  <!-- Rewrite 15 -->
+  <div class="rewrite-card">
+    <div class="rewrite-num">Rewrite 15</div>
+    <h4>Email E &mdash; Opening Filler</h4>
+    <div class="loc">01-email-series.md, Email E &bull; Lens: Clarity</div>
+
+    <div class="label-row">Current</div>
+    <div class="copy-block">It's been a while since you logged into VisualPing. A lot has changed &mdash; and the biggest change is relevant to why you signed up in the first place.</div>
+
+    <div class="arrow-label">&darr; Rewrite</div>
+    <div class="copy-block" style="border-color:var(--purple-border);background:var(--purple-bg);">A lot has changed at VisualPing since your last login &mdash; and the biggest update is relevant to why you signed up in the first place.</div>
+
+    <div class="rewrite-rationale">
+      Combines two sentences into one. Drops the patronizing reminder ("it's been a while"). Gets to the hook faster.
+    </div>
+  </div>
+
+  <!-- Rewrite 16 -->
+  <div class="rewrite-card">
+    <div class="rewrite-num">Rewrite 16</div>
+    <h4>Add a Concrete Scenario (New Copy)</h4>
+    <div class="loc">HTML email, after greeting &bull; Lens: Interest</div>
+
+    <div class="label-row">Currently</div>
+    <div class="copy-block" style="color:var(--text-secondary);font-style:italic;">No concrete scenario exists anywhere in the email.</div>
+
+    <div class="arrow-label">&darr; Suggested Addition (insert after greeting, before Feature 1)</div>
+    <div class="copy-block" style="border-color:var(--purple-border);background:var(--purple-bg);">Last week, one team's Report showed that three competitors updated their pricing pages within 48 hours. The AI summary connected the pattern: an industry-wide price adjustment was underway. That insight took 30 seconds to read &mdash; and saved a week of reactive scrambling.</div>
+
+    <div class="rewrite-rationale">
+      <strong>Highest-impact single change in this review.</strong> One concrete example does more for conversion than abstract benefit descriptions. The numbers (three competitors, 48 hours, 30 seconds, one week) create specificity that abstract claims cannot match.<br><br>
+      If this scenario can't be verified, substitute any realistic scenario from actual usage data. Even "Imagine..." works, though a real example is stronger.
+    </div>
+  </div>
+
+  <!-- ======================================== -->
+  <!-- VERIFICATION + PRIORITY ACTIONS -->
+  <!-- ======================================== -->
+  <div class="part-header">
+    <h2>Verification &amp; Priority Actions</h2>
+    <p>Checklist and prioritized action items for the editing pass</p>
+  </div>
+
+  <h3>Verification Checklist</h3>
+  <ul class="checklist">
+    <li>Every factual claim mapped to product guide or help article</li>
+    <li>Every rewrite avoids "genuinely" and exclamation marks (VP brand voice)</li>
+    <li>Rewrites maintain same or shorter word count</li>
+    <li>No issues re-raised from Feb 10 GTM Review</li>
+    <li>Rewrites are specific enough to apply in one editing pass</li>
+    <li>Veracity issues flagged with severity ratings</li>
+    <li>"Daily or weekly" &rarr; "daily, weekly, or monthly" applied across all flagged instances</li>
+  </ul>
+
+  <h3>Priority Actions</h3>
+
+  <div class="priority-section">
+    <h4><span class="priority-dot must"></span> Must-Fix Before Send (Veracity)</h4>
+    <ol>
+      <li><strong>Hero subline:</strong> "pulls every change" &rarr; clarify that users select jobs <em>(Rewrite 2)</em></li>
+      <li><strong>Feature 3:</strong> "daily or weekly" &rarr; add "monthly" &mdash; and fix in all 4 segment emails <em>(Rewrite 8, 13)</em></li>
+      <li><strong>Footer:</strong> Verify "85% of Fortune 500" is current and defensible</li>
+      <li><strong>Q1 section:</strong> Verify "7,000+ apps" and "12 templates" are current Zapier figures</li>
+    </ol>
+  </div>
+
+  <div class="priority-section">
+    <h4><span class="priority-dot should"></span> Should-Fix (Clarity)</h4>
+    <ol start="5">
+      <li><strong>Headline:</strong> Replace abstract positioning with reader-facing outcome <em>(Rewrite 1)</em></li>
+      <li><strong>Feature headings:</strong> Replace all three product labels with outcome statements <em>(Rewrites 3, 5)</em></li>
+      <li><strong>Feature 2 body:</strong> Replace "decision trail" with plain language <em>(Rewrite 6)</em></li>
+      <li><strong>Feature 2 body:</strong> Replace UI label enumeration with experiential description <em>(Rewrite 7)</em></li>
+      <li><strong>Sign-off:</strong> Replace "Stay in the know" with something connected to the message <em>(Rewrite 10)</em></li>
+      <li><strong>Email A:</strong> Remove "Tier 1.5" and competitor names from customer-facing copy <em>(Rewrite 12)</em></li>
+    </ol>
+  </div>
+
+  <div class="priority-section">
+    <h4><span class="priority-dot rec"></span> Recommended (Interest)</h4>
+    <ol start="11">
+      <li><strong>Add one concrete scenario</strong> after the greeting &mdash; highest-impact single change <em>(Rewrite 16)</em></li>
+      <li><strong>Consider removing Q1 section</strong> to maintain single-message focus</li>
+      <li><strong>Preheader:</strong> Replace announcer-voice second half with reader benefit <em>(Rewrite 9)</em></li>
+      <li><strong>Email E:</strong> Trim filler opening sentence <em>(Rewrite 15)</em></li>
+    </ol>
+  </div>
+
+</div>
+</body>
+</html>
