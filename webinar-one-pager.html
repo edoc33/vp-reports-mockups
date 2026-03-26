@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Visualping Reports Live Demo — April 25, 2026</title>
+  <meta name="description" content="Join our live walkthrough of Visualping Reports. See AI-summarized briefings built from real competitor data. April 25 at 3:00 PM EST.">
+  <meta property="og:title" content="Visualping Reports — Live Demo, April 25">
+  <meta property="og:description" content="See how one AI briefing replaces dozens of individual alerts. Live walkthrough + Q&A.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --dark-navy: #0C2235;
+      --primary-700: #0B51AE;
+      --primary-500: #1882FF;
+      --primary-300: #A8CBFF;
+      --neutral-900: #3A3A3A;
+      --neutral-600: #787878;
+      --neutral-200: #F7F8FB;
+      --neutral-100: #F2F4F8;
+      --border: #E5E9F1;
+      --white: #FFFFFF;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--neutral-900);
+      background: var(--neutral-100);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .page {
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--white);
+    }
+
+    /* ========== HERO ========== */
+    .hero {
+      background: var(--dark-navy);
+      padding: 56px 48px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      left: -60px;
+      width: 200px;
+      height: 200px;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.04);
+      transform: rotate(15deg);
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -40px;
+      right: -40px;
+      width: 160px;
+      height: 160px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.04);
+      transform: rotate(-10deg);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--primary-500);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--white);
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+      position: relative;
+    }
+
+    .hero h1 span {
+      color: var(--primary-500);
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 32px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-meta {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+
+    .hero-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.7);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .hero-meta-item svg {
+      flex-shrink: 0;
+    }
+
+    .cta-primary {
+      display: inline-block;
+      background: var(--primary-500);
+      color: var(--white);
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      padding: 16px 48px;
+      border-radius: 8px;
+      transition: background 0.15s;
+      position: relative;
+    }
+
+    .cta-primary:hover { background: #1474E6; }
+
+    .cta-ghost {
+      display: inline-block;
+      border: 2px solid var(--primary-500);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      padding: 14px 40px;
+      border-radius: 8px;
+      transition: all 0.15s;
+    }
+
+    .cta-ghost:hover {
+      background: var(--primary-500);
+      color: var(--white);
+    }
+
+    /* ========== WHAT YOU'LL SEE ========== */
+    .section {
+      padding: 48px 48px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--primary-500);
+      margin-bottom: 12px;
+    }
+
+    .section h2 {
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--neutral-900);
+      margin-bottom: 32px;
+      letter-spacing: -0.3px;
+    }
+
+    .agenda-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+    }
+
+    .agenda-card {
+      background: var(--neutral-200);
+      border-radius: 12px;
+      padding: 28px 24px;
+    }
+
+    .agenda-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--primary-500);
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 50%;
+      margin-bottom: 16px;
+    }
+
+    .agenda-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary-700);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .agenda-card p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--neutral-600);
+    }
+
+    /* ========== PRODUCT PREVIEW ========== */
+    .preview-section {
+      padding: 0 48px 48px;
+    }
+
+    .preview-image {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 32px -8px rgba(16,24,40,0.08);
+    }
+
+    /* ========== WHO SHOULD ATTEND ========== */
+    .personas {
+      background: var(--neutral-200);
+      padding: 48px;
+    }
+
+    .persona-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .persona-card {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 24px;
+      border: 1px solid var(--border);
+    }
+
+    .persona-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--neutral-900);
+      margin-bottom: 6px;
+    }
+
+    .persona-card p {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--neutral-600);
+    }
+
+    /* ========== TIER 1.5 BAND ========== */
+    .tier-band {
+      background: var(--primary-700);
+      padding: 40px 48px;
+      text-align: center;
+    }
+
+    .tier-band p {
+      font-size: 17px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.9);
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    .tier-band strong {
+      color: var(--white);
+    }
+
+    .tier-scale {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin-top: 28px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .tier-node {
+      text-align: center;
+      flex: 0 0 auto;
+    }
+
+    .tier-node-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 8px;
+    }
+
+    .tier-node-price {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .tier-node.active .tier-node-label {
+      color: var(--white);
+      font-size: 13px;
+    }
+
+    .tier-node.active .tier-node-price {
+      color: var(--primary-300);
+      font-weight: 700;
+    }
+
+    .tier-line {
+      flex: 1;
+      height: 2px;
+      background: rgba(255,255,255,0.2);
+      margin: 0 12px;
+      margin-top: -16px;
+    }
+
+    .tier-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      margin: 12px auto 8px;
+    }
+
+    .tier-node.active .tier-dot {
+      width: 16px;
+      height: 16px;
+      background: var(--primary-500);
+      box-shadow: 0 0 0 4px rgba(24,130,255,0.3);
+      margin: 10px auto 6px;
+    }
+
+    /* ========== BOTTOM CTA ========== */
+    .bottom-cta {
+      padding: 48px;
+      text-align: center;
+      background: var(--white);
+    }
+
+    .bottom-cta h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--neutral-900);
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
+    }
+
+    .bottom-cta .meta {
+      font-size: 15px;
+      color: var(--neutral-600);
+      margin-bottom: 28px;
+    }
+
+    .bottom-cta .note {
+      font-size: 13px;
+      color: var(--neutral-600);
+      margin-top: 16px;
+    }
+
+    /* ========== FOOTER ========== */
+    .footer {
+      padding: 24px 48px;
+      background: var(--neutral-200);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .footer-logo span {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--neutral-600);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--neutral-600);
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary-500);
+    }
+
+    /* ========== PRINT ========== */
+    @media print {
+      body { background: white; }
+      .page { max-width: none; box-shadow: none; }
+      .cta-primary, .cta-ghost { border: 2px solid #0B51AE; }
+      .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .tier-band { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .personas { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 640px) {
+      .hero { padding: 40px 24px 36px; }
+      .hero h1 { font-size: 28px; }
+      .hero-sub { font-size: 15px; }
+      .hero-meta { gap: 16px; }
+      .section { padding: 36px 24px; }
+      .agenda-grid { grid-template-columns: 1fr; }
+      .persona-grid { grid-template-columns: 1fr; }
+      .preview-section { padding: 0 24px 36px; }
+      .tier-band { padding: 36px 24px; }
+      .tier-scale { flex-direction: column; gap: 8px; }
+      .tier-line { width: 2px; height: 20px; margin: 0; }
+      .bottom-cta { padding: 36px 24px; }
+      .footer { padding: 20px 24px; flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ==================== HERO ==================== -->
+  <div class="hero">
+    <div class="hero-badge">LIVE DEMO</div>
+    <h1>See <span>Reports</span> in Action</h1>
+    <p class="hero-sub">Watch us build a competitive intelligence briefing from scratch. One AI summary replaces dozens of individual alerts.</p>
+
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="rgba(255,255,255,0.7)" stroke-width="1.5"/><path d="M5 1.5v3M11 1.5v3M2 7h12" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/></svg>
+        April 25, 2026
+      </div>
+      <div class="hero-meta-item">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="rgba(255,255,255,0.7)" stroke-width="1.5"/><path d="M8 5v3.5l2.5 1.5" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/></svg>
+        3:00 PM EST
+      </div>
+      <div class="hero-meta-item">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4.5l6 4 6-4M2.5 3.5h11a1 1 0 011 1v7a1 1 0 01-1 1h-11a1 1 0 01-1-1v-7a1 1 0 011-1z" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Live + Q&amp;A
+      </div>
+    </div>
+
+    <a href="https://riverside.com/webinar/registration/eyJldmVudElkIjoiNjljNTljNjE0ZmYxNzQwYjFkN2NmNjg5Iiwic2x1ZyI6InZpc3VhbHBpbmdzLXN0dWRpbyJ9" class="cta-primary">
+      Register Now &rarr;
+    </a>
+  </div>
+
+  <!-- ==================== WHAT YOU'LL SEE ==================== -->
+  <div class="section">
+    <div class="section-label">What You'll See</div>
+    <h2>A full Reports walkthrough in 30 minutes</h2>
+
+    <div class="agenda-grid">
+      <div class="agenda-card">
+        <div class="agenda-number">1</div>
+        <h3>Build a Report from Scratch</h3>
+        <p>Select monitoring jobs, set a date range, configure AI summaries, and generate your first briefing live.</p>
+      </div>
+      <div class="agenda-card">
+        <div class="agenda-number">2</div>
+        <h3>AI Summary on Real Data</h3>
+        <p>Watch the AI analyze changes across competitor pages and write a summary that identifies pricing shifts, messaging changes, and patterns.</p>
+      </div>
+      <div class="agenda-card">
+        <div class="agenda-number">3</div>
+        <h3>Schedule, Share, Discuss</h3>
+        <p>Set up automated delivery, export to PDF or Excel, and use comments and flags so your team acts on what they find.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PRODUCT PREVIEW ==================== -->
+  <div class="preview-section">
+    <img
+      src="https://cms-service-strapi-uploads.s3.us-west-2.amazonaws.com/Visualping_Report_Summary_and_Analysis_Example_b0d8801c67.png"
+      alt="Visualping Reports showing an AI-generated competitive intelligence summary with change entries and visual diffs"
+      class="preview-image"
+      loading="lazy"
+    />
+  </div>
+
+  <!-- ==================== WHO SHOULD ATTEND ==================== -->
+  <div class="personas">
+    <div class="section-label">Who Should Attend</div>
+    <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 24px; letter-spacing: -0.3px;">Built for people who track competitor websites</h2>
+
+    <div class="persona-grid">
+      <div class="persona-card">
+        <h3>Product Marketers</h3>
+        <p>Replace the Monday morning routine of compiling competitor updates from 50 alert emails into a shareable summary.</p>
+      </div>
+      <div class="persona-card">
+        <h3>CI Analysts</h3>
+        <p>Get AI-synthesized patterns across pricing, messaging, and feature changes without building the digest yourself.</p>
+      </div>
+      <div class="persona-card">
+        <h3>Agency Teams</h3>
+        <p>Generate client-ready competitive briefings automatically. Export to PDF. Cut 6+ hours/week of manual compilation.</p>
+      </div>
+      <div class="persona-card">
+        <h3>Compliance & Legal</h3>
+        <p>Create timestamped, auditable records of regulatory page changes with team review annotations built in.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TIER 1.5 BAND ==================== -->
+  <div class="tier-band">
+    <p>Most teams have outgrown individual change alerts but can't justify a <strong>$16,000+/year</strong> enterprise CI platform. Reports fills that gap: <strong>AI-summarized competitive briefings, included free with your Business plan.</strong></p>
+
+    <div class="tier-scale">
+      <div class="tier-node">
+        <div class="tier-node-label">Individual Alerts</div>
+        <div class="tier-dot"></div>
+        <div class="tier-node-price">$0-50/mo</div>
+      </div>
+      <div class="tier-line"></div>
+      <div class="tier-node active">
+        <div class="tier-node-label">Visualping Reports</div>
+        <div class="tier-dot"></div>
+        <div class="tier-node-price">~$100/mo</div>
+      </div>
+      <div class="tier-line"></div>
+      <div class="tier-node">
+        <div class="tier-node-label">Enterprise CI</div>
+        <div class="tier-dot"></div>
+        <div class="tier-node-price">$16K-40K+/yr</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== BOTTOM CTA ==================== -->
+  <div class="bottom-cta">
+    <h2>Save your spot</h2>
+    <p class="meta">April 25, 2026 &middot; 3:00 PM EST &middot; 30 minutes + Q&amp;A</p>
+    <a href="https://riverside.com/webinar/registration/eyJldmVudElkIjoiNjljNTljNjE0ZmYxNzQwYjFkN2NmNjg5Iiwic2x1ZyI6InZpc3VhbHBpbmdzLXN0dWRpbyJ9" class="cta-primary">
+      Register Now &rarr;
+    </a>
+    <p class="note">Free to attend. Recording sent to all registrants.</p>
+  </div>
+
+  <!-- ==================== FOOTER ==================== -->
+  <div class="footer">
+    <a href="https://visualping.io" class="footer-logo">
+      <img src="https://visualping.io/assets/logo-full.svg" alt="Visualping" width="120" height="auto" />
+    </a>
+    <div class="footer-links">
+      <a href="https://visualping.io/pricing">Pricing</a>
+      <a href="https://visualping.io/blog">Blog</a>
+      <a href="https://help.visualping.io">Support</a>
+      <a href="https://www.linkedin.com/company/visualping/">LinkedIn</a>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
