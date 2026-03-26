@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <title>Introducing Visualping Reports</title>
+  <!--[if mso]>
+  <noscript>
+    <xml>
+      <o:OfficeDocumentSettings>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+    </xml>
+  </noscript>
+  <![endif]-->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+    /* Reset */
+    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { -ms-interpolation-mode: bicubic; }
+    img { border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+    table { border-collapse: collapse !important; }
+    body { height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; }
+
+    /* Responsive */
+    @media screen and (max-width: 620px) {
+      .email-wrapper { width: 100% !important; }
+      .email-content { padding: 0 16px !important; }
+      .hero-section { padding: 40px 24px !important; }
+      .hero-headline { font-size: 28px !important; line-height: 34px !important; }
+      .hero-subline { font-size: 15px !important; }
+      .feature-row { display: block !important; width: 100% !important; }
+      .feature-text, .feature-image { display: block !important; width: 100% !important; padding: 0 !important; }
+      .feature-image { padding-top: 16px !important; }
+      .feature-section { padding: 32px 24px !important; }
+      .cta-button { width: 100% !important; }
+      .q1-section { padding: 32px 24px !important; }
+      .footer-section { padding: 32px 24px !important; }
+      .stack-on-mobile { display: block !important; width: 100% !important; }
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #F2F4F8; font-family: Inter, Arial, Helvetica, sans-serif;">
+
+  <!-- Preheader (hidden) -->
+  <div style="display: none; max-height: 0; overflow: hidden; font-size: 1px; line-height: 1px; color: #F2F4F8;">
+    Your changes, summarized by AI. Open one briefing instead of dozens of alerts.
+    &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847;
+  </div>
+
+  <!-- Email Wrapper -->
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #F2F4F8;">
+    <tr>
+      <td align="center" style="padding: 24px 0;">
+
+        <!-- Email Container (600px) -->
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" class="email-wrapper" style="background-color: #FFFFFF; border-radius: 8px; overflow: hidden; max-width: 600px;">
+
+          <!-- ============================================ -->
+          <!-- HEADER: VP Logo -->
+          <!-- ============================================ -->
+          <tr>
+            <td align="center" style="padding: 32px 40px 24px 40px; background-color: #FFFFFF;">
+              <!-- REPLACE: VP logo image URL -->
+              <img src="https://visualping.io/assets/logo-full.svg" alt="Visualping" width="160" style="display: block; width: 160px; height: auto;" />
+            </td>
+          </tr>
+
+          <!-- ============================================ -->
+          <!-- HERO SECTION -->
+          <!-- ============================================ -->
+          <tr>
+            <td class="hero-section" style="background-color: #0B51AE; padding: 48px 40px 52px 40px; text-align: center;">
+
+              <!-- NEW FEATURE badge -->
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin-bottom: 20px;">
+                <tr>
+                  <td style="background-color: #1882FF; border-radius: 20px; padding: 6px 18px; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: 600; color: #FFFFFF; letter-spacing: 1.5px; text-transform: uppercase;">
+                    NEW FEATURE
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Headline -->
+              <h1 class="hero-headline" style="margin: 0 0 16px 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 34px; font-weight: 700; line-height: 42px; color: #FFFFFF;">
+                Every Change, One Briefing
+              </h1>
+
+              <!-- Subline -->
+              <p class="hero-subline" style="margin: 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 16px; line-height: 26px; color: rgba(255, 255, 255, 0.9);">
+                Select the pages you track, pick a cadence, and get one<br>AI-written summary of everything that changed.
+              </p>
+            </td>
+          </tr>
+
+          <!-- ============================================ -->
+          <!-- GREETING -->
+          <!-- ============================================ -->
+          <tr>
+            <td style="padding: 40px 40px 8px 40px; background-color: #FFFFFF;">
+              <p style="margin: 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 16px; line-height: 26px; color: #3A3A3A;">
+                <!-- PERSONALIZATION: Replace with your ESP's merge tag -->
+                Hi {% if customer.first_name != blank %}{{customer.first_name}}{% else %}there{% endif %},
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 40px 32px 40px; background-color: #FFFFFF;">
+              <p style="margin: 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 16px; line-height: 26px; color: #3A3A3A;">
+                You get alerts when things change. But what do all those changes <em>mean together</em>? That's what Reports shows you.
+              </p>
+              <p style="margin: 16px 0 0 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 16px; line-height: 26px; color: #3A3A3A;">
+                Last week, one team's Report showed that three competitors updated their pricing pages within 48 hours. The AI summary connected the pattern: an industry-wide price adjustment was underway. That insight took 30 seconds to read.
+              </p>
+              <p style="margin: 16px 0 0 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 16px; line-height: 26px; color: #3A3A3A;">
+                <strong style="color: #0B51AE;">Reports is now available</strong>, included free with Business plans.
+              </p>
+            </td>
+          </tr>
+
+          <!-- ============================================ -->
+          <!-- FEATURE 1: AI Summary & Analysis -->
+          <!-- ============================================ -->
+          <tr>
+            <td class="feature-section" style="padding: 40px 40px 40px 40px; background-color: #F7F8FB;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr>
+                  <td style="padding-bottom: 20px;">
+                    <!-- Number Badge -->
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="width: 36px; height: 36px; background-color: #1882FF; border-radius: 50%; text-align: center; vertical-align: middle; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; color: #FFFFFF;">
+                          1
+                        </td>
+                        <td style="padding-left: 14px; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 20px; font-weight: 700; color: #0B51AE;">
+                          Read One Paragraph. Know What Changed.
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                      <tr class="feature-row">
+                        <td class="feature-text" style="vertical-align: top; width: 50%; padding-right: 16px;">
+                          <p style="margin: 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 15px; line-height: 24px; color: #3A3A3A;">
+                            The AI reads across all the changes in your report and writes a summary. A few sentences, and you know what matters.
+                          </p>
+                          <p style="margin: 12px 0 0 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 15px; line-height: 24px; color: #3A3A3A;">
+                            Pricing shifts, messaging changes, competitive moves: the AI catches patterns you'd miss scanning alerts one by one.
+                          </p>
+                        </td>
+                        <td class="feature-image" style="vertical-align: top; width: 50%;">
+                          <!-- REPLACE: Screenshot of AI Summary view in a generated report -->
+                          <img src="https://placehold.co/260x180/EAF1FF/0B51AE?text=AI+Summary+View" alt="Report showing AI-generated summary with key pattern insights highlighted" width="260" style="display: block; width: 100%; max-width: 260px; height: auto; border-radius: 8px; border: 1px solid #E5E9F1;" />
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ============================================ -->
+          <!-- FEATURE 2: Visual Diffs & Team Annotations -->
+          <!-- ============================================ -->
+          <tr>
+            <td class="feature-section" style="padding: 40px 40px 40px 40px; background-color: #FFFFFF;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr>
+                  <td style="padding-bottom: 20px;">
+                    <!-- Number Badge -->
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="width: 36px; height: 36px; background-color: #1882FF; border-radius: 50%; text-align: center; vertical-align: middle; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; color: #FFFFFF;">
+                          2
+                        </td>
+                        <td style="padding-left: 14px; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 20px; font-weight: 700; color: #0B51AE;">
+                          See What Changed. Show Your Team.
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                      <tr class="feature-row">
+                        <!-- Image on LEFT for alternating layout -->
+                        <td class="feature-image" style="vertical-align: top; width: 50%; padding-right: 16px;">
+                          <!-- REPLACE: Screenshot of visual diff with markup highlights + team comment -->
+                          <img src="https://placehold.co/260x180/EAF1FF/0B51AE?text=Visual+Diff+%2B+Comments" alt="Report showing side-by-side visual diff with markup highlights and a team comment annotation" width="260" style="display: block; width: 100%; max-width: 260px; height: auto; border-radius: 8px; border: 1px solid #E5E9F1;" />
+                        </td>
+                        <td class="feature-text" style="vertical-align: top; width: 50%;">
+                          <p style="margin: 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 15px; line-height: 24px; color: #3A3A3A;">
+                            Screenshots show each page before and after the change, with differences highlighted so you spot them instantly.
+                          </p>
+                          <p style="margin: 12px 0 0 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 15px; line-height: 24px; color: #3A3A3A;">
+                            Flag what matters, add your take, and keep a record of what your team decided about each change.
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ============================================ -->
+          <!-- FEATURE 3: Scheduled Delivery & Export -->
+          <!-- ============================================ -->
+          <tr>
+            <td class="feature-section" style="padding: 40px 40px 40px 40px; background-color: #F7F8FB;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr>
+                  <td style="padding-bottom: 20px;">
+                    <!-- Number Badge -->
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="width: 36px; height: 36px; background-color: #1882FF; border-radius: 50%; text-align: center; vertical-align: middle; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; color: #FFFFFF;">
+                          3
+                        </td>
+                        <td style="padding-left: 14px; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 20px; font-weight: 700; color: #0B51AE;">
+                          Get It Delivered. Share It Anywhere.
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                      <tr class="feature-row">
+                        <td class="feature-text" style="vertical-align: top; width: 50%; padding-right: 16px;">
+                          <p style="margin: 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 15px; line-height: 24px; color: #3A3A3A;">
+                            Choose daily, weekly, or monthly delivery. Export as PDF, Excel, or CSV. Share a live link with your team or clients. No login required on their end.
+                          </p>
+                          <p style="margin: 12px 0 0 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 15px; line-height: 24px; color: #3A3A3A;">
+                            Setup takes under 2 minutes.
+                          </p>
+                        </td>
+                        <td class="feature-image" style="vertical-align: top; width: 50%;">
+                          <!-- REPLACE: Screenshot of scheduling UI or export format picker -->
+                          <img src="https://placehold.co/260x180/EAF1FF/0B51AE?text=Schedule+%2B+Export" alt="Report scheduling interface showing frequency options and export format picker" width="260" style="display: block; width: 100%; max-width: 260px; height: auto; border-radius: 8px; border: 1px solid #E5E9F1;" />
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ============================================ -->
+          <!-- PRIMARY CTA -->
+          <!-- ============================================ -->
+          <tr>
+            <td align="center" style="padding: 40px 40px 16px 40px; background-color: #FFFFFF;">
+              <!-- Bulletproof button (Outlook + standard) -->
+              <!--[if mso]>
+              <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="[REPORTS_DASHBOARD_URL]" style="height:52px;v-text-anchor:middle;width:360px;" arcsize="15%" stroke="f" fillcolor="#1882FF">
+                <w:anchorlock/>
+                <center>
+              <![endif]-->
+              <!-- REPLACE: [REPORTS_DASHBOARD_URL] with actual link to Reports in dashboard -->
+              <a href="[REPORTS_DASHBOARD_URL]" class="cta-button" style="display: inline-block; background-color: #1882FF; color: #FFFFFF; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; text-decoration: none; padding: 16px 48px; border-radius: 8px; min-width: 260px; text-align: center; mso-padding-alt: 0;">
+                Get Your First Briefing
+              </a>
+              <!--[if mso]>
+                </center>
+              </v:roundrect>
+              <![endif]-->
+            </td>
+          </tr>
+
+          <!-- Secondary CTA for free/trial users -->
+          <tr>
+            <td align="center" style="padding: 0 40px 40px 40px; background-color: #FFFFFF;">
+              <p style="margin: 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 14px; line-height: 22px; color: #787878;">
+                Reports is included free with Business plans.
+                <!-- REPLACE: [UPGRADE_URL] with actual upgrade link -->
+                <a href="[UPGRADE_URL]" style="color: #1882FF; text-decoration: underline;">Upgrade to Business &rarr;</a>
+              </p>
+            </td>
+          </tr>
+
+          <!-- ============================================ -->
+          <!-- DIVIDER -->
+          <!-- ============================================ -->
+          <tr>
+            <td style="padding: 0 40px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr>
+                  <td style="border-top: 1px solid #E5E9F1; height: 1px; font-size: 1px; line-height: 1px;">&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ============================================ -->
+          <!-- MORE FROM Q1 SECTION -->
+          <!-- ============================================ -->
+          <tr>
+            <td class="q1-section" style="padding: 40px 40px 40px 40px; background-color: #FFFFFF;">
+              <h2 style="margin: 0 0 24px 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 20px; font-weight: 700; color: #0B51AE;">
+                More from Q1
+              </h2>
+
+              <!-- Zapier -->
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 20px;">
+                <tr>
+                  <td style="padding: 16px 20px; background-color: #F7F8FB; border-radius: 8px;">
+                    <p style="margin: 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 15px; line-height: 24px; color: #3A3A3A;">
+                      <strong style="color: #3A3A3A;">Native Zapier App</strong><br>
+                      Connect Visualping to 7,000+ apps with 12 ready-made automation templates.
+                      <!-- REPLACE: [ZAPIER_BLOG_URL] -->
+                      <a href="[ZAPIER_BLOG_URL]" style="color: #1882FF; text-decoration: none; font-weight: 500;"> Learn more &rarr;</a>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- API Keys -->
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 20px;">
+                <tr>
+                  <td style="padding: 16px 20px; background-color: #F7F8FB; border-radius: 8px;">
+                    <p style="margin: 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 15px; line-height: 24px; color: #3A3A3A;">
+                      <strong style="color: #3A3A3A;">Self-Serve API Keys</strong><br>
+                      Generate and manage API keys from your dashboard. No support ticket needed.
+                      <!-- REPLACE: [API_KEYS_BLOG_URL] -->
+                      <a href="[API_KEYS_BLOG_URL]" style="color: #1882FF; text-decoration: none; font-weight: 500;"> Learn more &rarr;</a>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Important Alerts AI -->
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr>
+                  <td style="padding: 16px 20px; background-color: #F7F8FB; border-radius: 8px;">
+                    <p style="margin: 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 15px; line-height: 24px; color: #3A3A3A;">
+                      <strong style="color: #3A3A3A;">Smarter Important Alerts</strong><br>
+                      Upgraded AI models for fewer false positives and more accurate change detection. Available on all plans, including Free.
+                      <!-- REPLACE: [IMPORTANT_ALERTS_BLOG_URL] -->
+                      <a href="[IMPORTANT_ALERTS_BLOG_URL]" style="color: #1882FF; text-decoration: none; font-weight: 500;"> Learn more &rarr;</a>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ============================================ -->
+          <!-- SIGN-OFF -->
+          <!-- ============================================ -->
+          <tr>
+            <td style="padding: 8px 40px 32px 40px; background-color: #FFFFFF;">
+              <p style="margin: 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 15px; line-height: 24px; color: #3A3A3A;">
+                Here's to fewer tabs,<br>
+                <strong>Visualping Team</strong>
+              </p>
+            </td>
+          </tr>
+
+          <!-- ============================================ -->
+          <!-- FOOTER: We're here to help -->
+          <!-- ============================================ -->
+          <tr>
+            <td class="footer-section" style="padding: 40px 40px 32px 40px; background-color: #F7F8FB; border-top: 1px solid #E5E9F1;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr>
+                  <td align="center">
+                    <h3 style="margin: 0 0 16px 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 18px; font-weight: 700; color: #3A3A3A;">
+                      We're here to help
+                    </h3>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding-bottom: 16px;">
+                    <!-- Team avatars -->
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
+                      <tr>
+                        <!-- REPLACE: Team avatar image URLs (3 circular photos) -->
+                        <td style="padding: 0 6px;">
+                          <img src="https://placehold.co/48x48/DAE9FF/0B51AE?text=VP" alt="Team member" width="48" height="48" style="display: block; width: 48px; height: 48px; border-radius: 50%;" />
+                        </td>
+                        <td style="padding: 0 6px;">
+                          <img src="https://placehold.co/48x48/DAE9FF/0B51AE?text=VP" alt="Team member" width="48" height="48" style="display: block; width: 48px; height: 48px; border-radius: 50%;" />
+                        </td>
+                        <td style="padding: 0 6px;">
+                          <img src="https://placehold.co/48x48/DAE9FF/0B51AE?text=VP" alt="Team member" width="48" height="48" style="display: block; width: 48px; height: 48px; border-radius: 50%;" />
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center">
+                    <p style="margin: 0 0 4px 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 14px; line-height: 22px; color: #787878;">
+                      Create a ticket, live chat in-app, or email us:
+                    </p>
+                    <p style="margin: 0 0 4px 0;">
+                      <a href="mailto:support@visualping.io" style="font-family: Inter, Arial, Helvetica, sans-serif; font-size: 14px; color: #1882FF; text-decoration: none; font-weight: 500;">support@visualping.io</a>
+                    </p>
+                    <p style="margin: 0;">
+                      <a href="https://visualping.io/contact" style="font-family: Inter, Arial, Helvetica, sans-serif; font-size: 14px; color: #1882FF; text-decoration: none; font-weight: 500;">Contact us &rarr;</a>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ============================================ -->
+          <!-- FOOTER: Trust Logos -->
+          <!-- ============================================ -->
+          <tr>
+            <td align="center" style="padding: 24px 40px 16px 40px; background-color: #F7F8FB;">
+              <p style="margin: 0 0 12px 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 12px; line-height: 18px; color: #B7BABE;">
+                Trusted by 85% of Fortune 500 companies<br>and 2 million users worldwide
+              </p>
+              <!-- REPLACE: Trust logo strip image (grayscale logos: Reuters, Allianz, Amazon, bp, Citi, Facebook, Google, NASA, etc.) -->
+              <img src="https://placehold.co/480x30/F7F8FB/B7BABE?text=Reuters++Allianz++Amazon++bp++Citi++Facebook++Google++NASA" alt="Trusted by Reuters, Allianz, Amazon, bp, Citi, Facebook, Google, NASA and more" width="480" style="display: block; width: 100%; max-width: 480px; height: auto; margin: 0 auto;" />
+            </td>
+          </tr>
+
+          <!-- ============================================ -->
+          <!-- FOOTER: Social + Nav + Legal -->
+          <!-- ============================================ -->
+          <tr>
+            <td align="center" style="padding: 20px 40px 32px 40px; background-color: #F7F8FB;">
+              <!-- Social icons -->
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin-bottom: 16px;">
+                <tr>
+                  <td style="padding: 0 8px;">
+                    <a href="https://www.facebook.com/visualping" style="text-decoration: none;">
+                      <!-- REPLACE: Social icon images -->
+                      <img src="https://placehold.co/24x24/B7BABE/FFFFFF?text=f" alt="Facebook" width="24" height="24" style="display: block;" />
+                    </a>
+                  </td>
+                  <td style="padding: 0 8px;">
+                    <a href="https://www.youtube.com/@visualping" style="text-decoration: none;">
+                      <img src="https://placehold.co/24x24/B7BABE/FFFFFF?text=YT" alt="YouTube" width="24" height="24" style="display: block;" />
+                    </a>
+                  </td>
+                  <td style="padding: 0 8px;">
+                    <a href="https://x.com/visualping" style="text-decoration: none;">
+                      <img src="https://placehold.co/24x24/B7BABE/FFFFFF?text=X" alt="X (Twitter)" width="24" height="24" style="display: block;" />
+                    </a>
+                  </td>
+                  <td style="padding: 0 8px;">
+                    <a href="https://www.linkedin.com/company/visualping/" style="text-decoration: none;">
+                      <img src="https://placehold.co/24x24/B7BABE/FFFFFF?text=in" alt="LinkedIn" width="24" height="24" style="display: block;" />
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Nav links -->
+              <p style="margin: 0 0 16px 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 12px; line-height: 18px; color: #B7BABE;">
+                <a href="https://help.visualping.io" style="color: #787878; text-decoration: none;">Help and Support</a>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <a href="https://visualping.io/blog" style="color: #787878; text-decoration: none;">Blog</a>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <a href="https://visualping.io" style="color: #787878; text-decoration: none;">Website</a>
+              </p>
+
+              <!-- Company info -->
+              <p style="margin: 0 0 8px 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 11px; line-height: 16px; color: #B7BABE;">
+                WebMonitoring Technologies Inc.<br>
+                555 Burrard Street, 1st Floor, Vancouver, BC V7X 1M8 Canada
+              </p>
+
+              <!-- Unsubscribe -->
+              <p style="margin: 0; font-family: Inter, Arial, Helvetica, sans-serif; font-size: 11px; line-height: 16px; color: #B7BABE;">
+                <!-- REPLACE: [UNSUBSCRIBE_URL] with ESP unsubscribe merge tag -->
+                To no longer receive these emails, <a href="[UNSUBSCRIBE_URL]" style="color: #B7BABE; text-decoration: underline;">Manage your email preferences here</a>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+        <!-- /Email Container -->
+
+      </td>
+    </tr>
+  </table>
+  <!-- /Email Wrapper -->
+
+</body>
+</html>
