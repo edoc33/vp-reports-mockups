@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VP Reports Hero — Preview</title>
+<style>
+  @import url('https://api.fontshare.com/v2/css?f[]=satoshi@700,500,400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f5f5f5;
+  }
+
+  /* === VARIANT TABS === */
+  .tab-bar {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; gap: 0;
+    background: #0a1c2e;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 0 32px;
+    font-family: 'Satoshi', sans-serif;
+  }
+  .tab-bar button {
+    background: none; border: none; color: rgba(255,255,255,0.5);
+    font-size: 14px; font-weight: 700; padding: 14px 24px;
+    cursor: pointer; border-bottom: 2px solid transparent;
+    font-family: inherit; transition: all 0.2s;
+  }
+  .tab-bar button:hover { color: rgba(255,255,255,0.8); }
+  .tab-bar button.active { color: #fff; border-bottom-color: #1882FF; }
+
+  .variant { display: none; }
+  .variant.active { display: block; }
+
+  /* === HERO SECTION === */
+  .hero {
+    background: #0C2235;
+    padding: 80px 32px 64px;
+    position: relative;
+    overflow: hidden;
+    min-height: 90vh;
+  }
+
+  /* Decorative shapes (from homepage pattern) */
+  .hero::before, .hero::after {
+    content: '';
+    position: absolute;
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,0.04);
+    pointer-events: none;
+  }
+  .hero::before {
+    width: 300px; height: 200px;
+    top: 40px; left: -80px;
+    transform: rotate(-12deg);
+  }
+  .hero::after {
+    width: 250px; height: 180px;
+    bottom: 100px; right: -60px;
+    transform: rotate(8deg);
+  }
+
+  .hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .overline {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #1882FF;
+    margin-bottom: 20px;
+    padding: 6px 16px;
+    border: 1px solid rgba(24,130,255,0.3);
+    border-radius: 100px;
+  }
+
+  .hero h1 {
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+    text-wrap: balance;
+  }
+  .hero h1 .accent { color: #1882FF; }
+
+  .hero .subtitle {
+    font-size: 18px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.6;
+    max-width: 640px;
+    margin: 0 auto 48px;
+    text-wrap: balance;
+  }
+
+  /* === PRODUCT CARD === */
+  .product-card {
+    background: #FFFFFF;
+    border-radius: 16px;
+    box-shadow: 0px 32px 64px -12px rgba(16,24,40,0.14);
+    max-width: 1060px;
+    margin: 0 auto 48px;
+    overflow: hidden;
+  }
+
+  /* App chrome bar */
+  .app-chrome {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 20px;
+    background: #FCFCFD;
+    border-bottom: 1px solid #E8EAED;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-red { background: #FF5F57; }
+  .dot-yellow { background: #FEBC2E; }
+  .dot-green { background: #28C840; }
+  .app-chrome .app-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #3A3A3A;
+    margin-left: 12px;
+  }
+  .app-chrome .vp-logo {
+    width: 18px; height: 18px;
+    background: #1882FF;
+    border-radius: 4px;
+    margin-left: auto;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: white; font-weight: 700;
+  }
+
+  /* Report table */
+  .report-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .report-table thead th {
+    text-align: left;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #1882FF;
+    padding: 12px 16px;
+    background: #F0F6FF;
+    border-bottom: 2px solid #D6E8FF;
+    white-space: nowrap;
+  }
+  .report-table tbody td {
+    padding: 11px 16px;
+    border-bottom: 1px solid #F0F0F0;
+    color: #3A3A3A;
+    vertical-align: top;
+  }
+  .report-table tbody tr:hover {
+    background: #FAFBFF;
+  }
+
+  /* Row number */
+  .row-num {
+    color: #A0A0A0;
+    font-size: 11px;
+    font-weight: 500;
+    width: 32px;
+  }
+
+  /* Change type badges */
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .badge-text { background: #E8F4FD; color: #0B51AE; }
+  .badge-keyword { background: #FFF3E0; color: #E65100; }
+  .badge-visual { background: #F3E8FF; color: #7B1FA2; }
+
+  /* Links */
+  .link { color: #1882FF; text-decoration: none; font-weight: 500; }
+  .link:hover { text-decoration: underline; }
+
+  /* Diff % */
+  .diff { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .diff-high { color: #D32F2F; }
+  .diff-med { color: #E65100; }
+  .diff-low { color: #2E7D32; }
+
+  /* Summary text */
+  .summary { color: #666; font-size: 12px; }
+
+  /* Highlighted row */
+  .row-highlight {
+    background: #EBF3FF !important;
+  }
+  .row-highlight td {
+    border-bottom-color: #1882FF;
+  }
+
+  /* Callout tooltip */
+  .callout-row td {
+    padding: 0 !important;
+    border-bottom: none !important;
+  }
+  .callout {
+    margin: 0 40px 16px;
+    padding: 16px 20px;
+    background: #FFFFFF;
+    border: 1px solid #D6E8FF;
+    border-left: 4px solid #1882FF;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 4px 12px rgba(24,130,255,0.08);
+    font-size: 13px;
+    line-height: 1.6;
+    color: #3A3A3A;
+  }
+  .callout strong {
+    color: #D32F2F;
+    font-weight: 700;
+  }
+  .callout .callout-label {
+    color: #1882FF;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  /* === MINI JOB CREATOR === */
+  .mini-job-creator {
+    max-width: 560px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .mini-job-creator input {
+    flex: 1;
+    padding: 14px 20px;
+    font-size: 16px;
+    font-family: 'Satoshi', sans-serif;
+    border: none;
+    outline: none;
+    background: #FFFFFF;
+    color: #3A3A3A;
+  }
+  .mini-job-creator input::placeholder { color: #999; }
+  .mini-job-creator button {
+    padding: 14px 28px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Satoshi', sans-serif;
+    background: #1882FF;
+    color: #FFFFFF;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+  .mini-job-creator button:hover { background: #0B51AE; }
+
+  /* === FOOTER NOTE === */
+  .preview-note {
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 12px;
+    color: #999;
+  }
+  .preview-note code {
+    background: #eee;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+  }
+</style>
+</head>
+<body>
+
+<div class="tab-bar">
+  <button class="active" onclick="showVariant('ci')">Competitive Intelligence</button>
+  <button onclick="showVariant('compliance')">Compliance</button>
+  <button onclick="showVariant('finance')">Finance</button>
+</div>
+
+<!-- ==================== COMPETITIVE INTELLIGENCE ==================== -->
+<div class="variant active" id="ci">
+  <section class="hero">
+    <div class="hero-content">
+      <div class="overline">Reports for Competitive Intelligence</div>
+      <h1>Track Every <span class="accent">Competitor Move</span> Without Lifting a Finger</h1>
+      <p class="subtitle">Visualping monitors competitor websites for pricing, product, and messaging changes, then delivers AI-summarized briefings to your inbox on schedule.</p>
+
+      <div class="product-card">
+        <div class="app-chrome">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+          <span class="app-title">Visualping Report — Competitor Watch (Weekly)</span>
+          <div class="vp-logo">V</div>
+        </div>
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Page URL</th>
+              <th>Change</th>
+              <th>Summary</th>
+              <th>Previous</th>
+              <th>Current</th>
+              <th>Detected</th>
+              <th>Diff %</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="row-num">1</td>
+              <td><a class="link" href="#">competitor.com/pricing</a></td>
+              <td><span class="badge badge-text">Text</span></td>
+              <td class="summary">Enterprise tier price increased</td>
+              <td><a class="link" href="#">Link</a></td>
+              <td><a class="link" href="#">Link</a></td>
+              <td>Mar 24, 2026</td>
+              <td><span class="diff diff-high">4.80</span></td>
+            </tr>
+            <tr>
+              <td class="row-num">2</td>
+              <td><a class="link" href="#">rival.co/features</a></td>
+              <td><span class="badge badge-visual">Visual</span></td>
+              <td class="summary">New "AI Assistant" section added</td>
+              <td><a class="link" href="#">Link</a></td>
+              <td><a class="link" href="#">Link</a></td>
+              <td>Mar 24, 2026</td>
+              <td><span class="diff diff-med">2.30</span></td>
+            </tr>
+            <tr>
+              <td class="row-num">3</td>
+              <td><a class="link" href="#">competitor.com/blog</a></td>
+              <td><span class="badge badge-text">Text</span></td>
+              <td class="summary">Published "2026 Roadmap" post</td>
+              <td><a class="link" href="#">Link</a></td>
+              <td><a class="link" href="#">Link</a></td>
+              <td>Mar 23, 2026</td>
+              <td><span class="diff diff-low">1.10</span></td>
+            </tr>
+            <tr>
+              <td class="row-num">4</td>
+              <td><a class="link" href="#">rival.co/pricing</a></td>
+              <td><span class="badge badge-keyword">Keyword</span></td>
+              <td class="summary">Free trial extended to 30 days</td>
+              <td><a class="link" href="#">Link</a></td>
+              <td><a class="link" href="#">Link</a></td>
+              <td>Mar 23, 2026</td>
+              <td><span class="diff diff-low">0.90</span></td>
+            </tr>
+            <tr class="row-highlight">
+              <td class="row-num">5</td>
+              <td><a class="link" href="#">competitor.com/pricing</a></td>
+              <td><span class="badge badge-keyword">Keyword</span></td>
+              <td class="summary"><strong>Important</strong> — Enterprise tier change</td>
+              <td><a class="link" href="#">Link</a></td>
+              <td><a class="link" href="#">Link</a></td>
+              <td>Mar 22, 2026</td>
+              <td><span class="diff diff-high">3.50</span></td>
+            </tr>
+            <tr class="callout-row">
+              <td colspan="8">
+                <div class="callout">
+                  <span class="callout-label">AI Summary</span>
+                  <strong>Alert:</strong> Competitor X increased Enterprise tier pricing from $499/mo to $699/mo (+40%). Growth and Starter tiers unchanged. This is their first price increase since 2024. The pricing page also added a new "Enterprise Plus" tier at $1,199/mo with dedicated support.
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="row-num">6</td>
+              <td><a class="link" href="#">rival.co/about</a></td>
+              <td><span class="badge badge-text">Text</span></td>
+              <td class="summary">New VP of Sales listed</td>
+              <td><a class="link" href="#">Link</a></td>
+              <td><a class="link" href="#">Link</a></td>
+              <td>Mar 21, 2026</td>
+              <td><span class="diff diff-low">0.60</span></td>
+            </tr>
+            <tr>
+              <td class="row-num">7</td>
+              <td><a class="link" href="#">competitor.com/careers</a></td>
+              <td><span class="badge badge-visual">Visual</span></td>
+              <td class="summary">12 new engineering roles posted</td>
+              <td><a class="link" href="#">Link</a></td>
+              <td><a class="link" href="#">Link</a></td>
+              <td>Mar 20, 2026</td>
+              <td><span class="diff diff-med">2.10</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mini-job-creator">
+        <input type="text" placeholder="Enter a competitor page URL...">
+        <button>Start monitoring</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== COMPLIANCE ==================== -->
+<div class="variant" id="compliance">
+  <section class="hero">
+    <div class="hero-content">
+      <div class="overline">Reports for Compliance</div>
+      <h1>Compliance Reporting That <span class="accent">Writes Itself</span></h1>
+      <p class="subtitle">Visualping monitors regulatory websites and delivers AI-summarized change reports to your inbox on schedule. No manual reviews, no missed updates.</p>
+
+      <div class="product-card">
+        <div class="app-chrome">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+          <span class="app-title">Visualping Report — Regulatory Watch (Weekly)</span>
+          <div class="vp-logo">V</div>
+        </div>
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Page URL</th>
+              <th>Change</th>
+              <th>Summary</th>
+              <th>Previous</th>
+              <th>Current</th>
+              <th>Detected</th>
+              <th>Diff %</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="row-num">1</td>
+              <td><a class="link" href="#">fda.gov/guidance</a></td>
+              <td><span class="badge badge-text">Text</span></td>
+              <td class="summary">Labeling requirements updated</td>
+              <td><a class="link" href="#">Link</a></td>
+              <td><a class="link" href="#">Link</a></td>
+              <td>Mar 24, 2026</td>
+              <td><span class="diff diff-high">3.40</span></td>
+            </tr>
+            <tr>
+              <td class="row-num">2</td>
+              <td><a class="link" href="#">cms.gov/billing-rules</a></td>
+              <td><span class="badge badge-keyword">Keyword</span></td>
+              <td class="summary">Reimbursement rate changed</td>
+              <td><a class="link" href="#">Link</a></td>
+              <td><a class="link" href="#">Link</a></td>
+              <td>Mar 23, 2026</td>
+              <td><span class="diff diff-med">2.10</span></td>
+            </tr>
+            <tr>
+              <td class="row-num">3</td>
+              <td><a class="link" href="#">state.gov/licensing</a></td>
+              <td><span class="badge badge-text">Text</span></td>
+              <td class="summary">Renewal deadline extended</td>
+              <td><a class="link" href="#">Link</a></td>
+              <td><a class="link" href="#">Link</a></td>
+              <td>Mar 23, 2026</td>
+              <td><span class="diff diff-low">0.80</span></td>
+            </tr>
+            <tr class="row-highlight">
+              <td class="row-num">4</td>
+              <td><a class="link" href="#">cms.gov/outpatient</a></td>
+              <td><span class="badge badge-keyword">Keyword</span></td>
+              <td class="summary"><strong>Important</strong> — Rate change</td>
+              <td><a class="link" href="#">Link</a></td>
+              <td><a class="link" href="#">Link</a></td>
+              <td>Mar 22, 2026</td>
+              <td><span class="diff diff-high">4.20</span></td>
+            </tr>
+            <tr class="callout-row">
+              <td colspan="8">
+                <div class="callout">
+                  <span class="callout-label">AI Summary</span>
+                  <strong>Important:</strong> CMS has updated the reimbursement rate for outpatient services from $142 to $156 per visit, effective Q2 2026. This affects all Medicare-participating facilities. The updated fee schedule also introduces a new modifier code (GT-3) for telehealth follow-ups.
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="row-num">5</td>
+              <td><a class="link" href="#">osha.gov/standards</a></td>
+              <td><span class="badge badge-visual">Visual</span></td>
+              <td class="summary">Workplace safety table revised</td>
+              <td><a class="link" href="#">Link</a></td>
+              <td><a class="link" href="#">Link</a></td>
+              <td>Mar 21, 2026</td>
+              <td><span class="diff diff-low">1.50</span></td>
+            </tr>
+            <tr>
+              <td class="row-num">6</td>
+              <td><a class="link" href="#">hhs.gov/hipaa</a></td>
+              <td><span class="badge badge-text">Text</span></td>
+              <td class="summary">Breach notification rule clarified</td>
+              <td><a class="link" href="#">Link</a></td>
+              <td><a class="link" href="#">Link</a></td>
+              <td>Mar 20, 2026</td>
+              <td><span class="diff diff-low">0.70</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mini-job-creator">
+        <input type="text" placeholder="Enter a regulatory page URL...">
+        <button>Start monitoring</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== FINANCE ==================== -->
+<div class="variant" id="finance">
+  <section class="hero">
+    <div class="hero-content">
+      <div class="overline">Reports for Finance</div>
+      <h1>Catch <span class="accent">Regulatory Changes</span> Before They Become Violations</h1>
+      <p class="subtitle">Visualping monitors SEC filings, regulatory portals, and compliance-critical websites, then delivers AI-summarized briefings to your inbox on schedule.</p>
+
+      <div class="product-card">
+        <div class="app-chrome">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+          <span class="app-title">Visualping Report — Financial Regulatory Watch (Weekly)</span>
+          <div class="vp-logo">V</div>
+        </div>
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Page URL</th>
+              <th>Change</th>
+              <th>Summary</th>
+              <th>Previous</th>
+              <th>Current</th>
+              <th>Detected</th>
+              <th>Diff %</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="row-num">1</td>
+              <td><a class="link" href="#">sec.gov/rules/proposed</a></td>
+              <td><span class="badge badge-text">Text</span></td>
+              <td class="summary">Comment period extended</td>
+              <td><a class="link" href="#">Link</a></td>
+              <td><a class="link" href="#">Link</a></td>
+              <td>Mar 24, 2026</td>
+              <td><span class="diff diff-med">2.50</span></td>
+            </tr>
+            <tr>
+              <td class="row-num">2</td>
+              <td><a class="link" href="#">finra.org/rules</a></td>
+              <td><span class="badge badge-keyword">Keyword</span></td>
+              <td class="summary">Margin requirements updated</td>
+              <td><a class="link" href="#">Link</a></td>
+              <td><a class="link" href="#">Link</a></td>
+              <td>Mar 24, 2026</td>
+              <td><span class="diff diff-high">3.80</span></td>
+            </tr>
+            <tr>
+              <td class="row-num">3</td>
+              <td><a class="link" href="#">occ.gov/publications</a></td>
+              <td><span class="badge badge-text">Text</span></td>
+              <td class="summary">Risk guidance bulletin issued</td>
+              <td><a class="link" href="#">Link</a></td>
+              <td><a class="link" href="#">Link</a></td>
+              <td>Mar 23, 2026</td>
+              <td><span class="diff diff-low">1.20</span></td>
+            </tr>
+            <tr class="row-highlight">
+              <td class="row-num">4</td>
+              <td><a class="link" href="#">sec.gov/rules/10c-1a</a></td>
+              <td><span class="badge badge-keyword">Keyword</span></td>
+              <td class="summary"><strong>Important</strong> — Deadline change</td>
+              <td><a class="link" href="#">Link</a></td>
+              <td><a class="link" href="#">Link</a></td>
+              <td>Mar 22, 2026</td>
+              <td><span class="diff diff-high">4.10</span></td>
+            </tr>
+            <tr class="callout-row">
+              <td colspan="8">
+                <div class="callout">
+                  <span class="callout-label">AI Summary</span>
+                  <strong>Important:</strong> SEC has extended the comment period for proposed Rule 10c-1a (securities lending transparency) from 60 to 90 days. New deadline: June 15, 2026. The extension follows pushback from 14 industry associations citing implementation complexity for smaller broker-dealers.
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="row-num">5</td>
+              <td><a class="link" href="#">federalreserve.gov/rates</a></td>
+              <td><span class="badge badge-visual">Visual</span></td>
+              <td class="summary">Rate projection table updated</td>
+              <td><a class="link" href="#">Link</a></td>
+              <td><a class="link" href="#">Link</a></td>
+              <td>Mar 21, 2026</td>
+              <td><span class="diff diff-med">1.90</span></td>
+            </tr>
+            <tr>
+              <td class="row-num">6</td>
+              <td><a class="link" href="#">cftc.gov/enforcement</a></td>
+              <td><span class="badge badge-text">Text</span></td>
+              <td class="summary">New enforcement action filed</td>
+              <td><a class="link" href="#">Link</a></td>
+              <td><a class="link" href="#">Link</a></td>
+              <td>Mar 20, 2026</td>
+              <td><span class="diff diff-low">0.50</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mini-job-creator">
+        <input type="text" placeholder="Enter an SEC or regulatory URL...">
+        <button>Start monitoring</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="preview-note">
+  Preview mockup — <code>reports-hero-preview.html</code> — all 3 vertical variants with <code>#0C2235</code> dark navy hero
+</div>
+
+<script>
+function showVariant(id) {
+  document.querySelectorAll('.variant').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab-bar button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
