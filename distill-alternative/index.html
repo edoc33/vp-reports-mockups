@@ -60,7 +60,7 @@
     <a href="https://visualping.io" class="flex items-center gap-2">
       <img src="https://cms-service-strapi-uploads.s3.us-west-2.amazonaws.com/vp_65c020b676.png" alt="Visualping" class="h-5 brightness-0 invert">
     </a>
-    <a href="https://visualping.io/sign-up" class="text-sm font-bold text-white border border-white/30 rounded-lg px-4 py-2 hover:bg-white/10 transition-colors">
+    <a href="https://visualping.io/sign-up?utm_source=landing&amp;utm_medium=distill-alternative&amp;utm_campaign=cta" class="text-sm font-bold text-white border border-white/30 rounded-lg px-4 py-2 hover:bg-white/10 transition-colors">
       Get started free
     </a>
   </nav>
@@ -194,14 +194,14 @@
         </table>
       </div>
 
-      <!-- MiniJobCreator -->
-      <div class="max-w-[560px] mx-auto flex rounded-lg overflow-hidden shadow-md">
-        <input type="text" placeholder="Enter a URL to start monitoring..."
+      <!-- MiniJobCreator — submits to VP homepage with URL prefilled -->
+      <form id="hero-form" class="max-w-[560px] mx-auto flex rounded-lg overflow-hidden shadow-md" onsubmit="event.preventDefault(); var u=this.querySelector('input').value.trim(); if(u &amp;&amp; !u.startsWith('http')){u='https://'+u;} window.open('https://visualping.io/?url='+encodeURIComponent(u)+'&utm_source=landing&utm_medium=distill-alternative&utm_campaign=hero-cta','_blank');">
+        <input type="text" placeholder="Enter a URL to start monitoring..." required
           class="flex-1 px-5 py-3.5 text-base bg-white text-vp-body placeholder:text-gray-400 border-none outline-none font-[Satoshi]">
-        <button class="px-7 py-3.5 text-[15px] font-bold bg-vp-primary text-white border-none cursor-pointer whitespace-nowrap hover:bg-vp-primary-hover transition-colors font-[Satoshi]">
+        <button type="submit" class="px-7 py-3.5 text-[15px] font-bold bg-vp-primary text-white border-none cursor-pointer whitespace-nowrap hover:bg-vp-primary-hover transition-colors font-[Satoshi]">
           Start monitoring
         </button>
-      </div>
+      </form>
     </div>
   </section>
 
@@ -382,7 +382,7 @@
         One caught a pricing change 4 hours before their sales team did.
       </p>
 
-      <a href="https://visualping.io/sign-up" class="inline-block px-8 py-3.5 bg-vp-primary text-white text-lg font-bold rounded-lg hover:bg-vp-primary-hover transition-colors mb-8">
+      <a href="https://visualping.io/sign-up?utm_source=landing&amp;utm_medium=distill-alternative&amp;utm_campaign=cta" class="inline-block px-8 py-3.5 bg-vp-primary text-white text-lg font-bold rounded-lg hover:bg-vp-primary-hover transition-colors mb-8">
         Start free monitoring
       </a>
 
@@ -467,7 +467,7 @@
       </p>
 
       <div class="flex flex-col sm:flex-row gap-4 justify-center mb-10">
-        <a href="https://visualping.io/sign-up" class="inline-block px-8 py-3.5 bg-vp-primary text-white text-lg font-bold rounded-lg hover:bg-vp-primary/90 transition-colors tracking-wide">
+        <a href="https://visualping.io/sign-up?utm_source=landing&amp;utm_medium=distill-alternative&amp;utm_campaign=cta" class="inline-block px-8 py-3.5 bg-vp-primary text-white text-lg font-bold rounded-lg hover:bg-vp-primary/90 transition-colors tracking-wide">
           Start free monitoring
         </a>
       </div>
